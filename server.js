@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
@@ -6,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const { Pool } = require('pg');
 
 const {
+  DATABASE_URL,
   DB_HOST,
   DB_PORT = 5432,
   DB_NAME,
@@ -16,23 +18,33 @@ const {
   ALLOWED_ORIGINS = '*'
 } = process.env;
 
-if (!DB_HOST || !DB_NAME || !DB_USER) {
-  console.error('Warning: Missing DB_HOST / DB_NAME / DB_USER — database routes will fail until these are set.');
+if (!DATABASE_URL && (!DB_HOST || !DB_NAME || !DB_USER)) {
+  console.error('Warning: Missing DATABASE_URL (or DB_HOST/DB_NAME/DB_USER) — database routes will fail until these are set.');
 }
 if (!JWT_SECRET) {
   console.error('Warning: Missing JWT_SECRET — admin login/auth routes will fail until this is set.');
 }
 
-const pool = new Pool({
-  host: DB_HOST,
-  port: Number(DB_PORT),
-  database: DB_NAME,
-  user: DB_USER,
-  password: DB_PASSWORD,
-  max: 10,                     // never open more than 10 connections at once
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000
-});
+// Use a single DATABASE_URL when provided (e.g. Neon, Supabase — these require SSL).
+// Otherwise fall back to discrete DB_* vars for plain local Postgres.
+const pool = DATABASE_URL
+  ? new Pool({
+      connectionString: DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000
+    })
+  : new Pool({
+      host: DB_HOST,
+      port: Number(DB_PORT),
+      database: DB_NAME,
+      user: DB_USER,
+      password: DB_PASSWORD,
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000
+    });
 
 pool.on('error', (err) => {
   console.error('Unexpected idle client error', err);
@@ -55,7 +67,7 @@ app.use(cors({
   origin: allowedOrigins.includes('*') ? true : allowedOrigins
 }));
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ---------- helpers ----------
 function toPublicProduct(row) {
