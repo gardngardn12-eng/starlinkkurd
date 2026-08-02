@@ -17,12 +17,10 @@ const {
 } = process.env;
 
 if (!DB_HOST || !DB_NAME || !DB_USER) {
-  console.error('Missing DB_HOST / DB_NAME / DB_USER in .env');
-  process.exit(1);
+  console.error('Warning: Missing DB_HOST / DB_NAME / DB_USER — database routes will fail until these are set.');
 }
 if (!JWT_SECRET) {
-  console.error('Missing JWT_SECRET in .env');
-  process.exit(1);
+  console.error('Warning: Missing JWT_SECRET — admin login/auth routes will fail until this is set.');
 }
 
 const pool = new Pool({
@@ -186,7 +184,11 @@ app.put('/api/admin/products/:slug', requireAuth, async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Starlink Kurd pricing API running on http://localhost:${PORT}`);
-  console.log(`Admin panel:  http://localhost:${PORT}/admin.html`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Starlink Kurd pricing API running on http://localhost:${PORT}`);
+    console.log(`Admin panel:  http://localhost:${PORT}/admin.html`);
+  });
+}
+
+module.exports = app;
