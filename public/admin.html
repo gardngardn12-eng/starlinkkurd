@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ئەدمین پانێل - Starlink Kurd</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#cccdc7;
+    --surface:#f6f6f3;
+    --surface-2:#e3e4de;
+    --border:#b6b8ad;
+    --border-soft:#c2c3bb;
+    --text:#14181a;
+    --text-dim:#4a4f47;
+    --text-faint:#767b70;
+    --cyan:#0f7fae;
+    --cyan-soft:#0f7fae1a;
+    --amber:#c06e1f;
+    --danger:#c0392b;
+    --danger-soft:#c0392b14;
+    --ok:#0b8f7e;
+    --ok-soft:#0b8f7e14;
+    --radius:18px;
+    --radius-sm:12px;
+    --ff:'Vazirmatn',sans-serif;
+    --ff-mono:'JetBrains Mono',monospace;
+    --ease:cubic-bezier(.16,1,.3,1);
+    --shadow-sm:0 4px 14px -4px rgba(20,24,20,.14);
+    --shadow-md:0 20px 44px -18px rgba(20,24,20,.24);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:var(--ff); color:var(--text);
+    background:
+      radial-gradient(900px 600px at 88% -10%, #dfe6de 0%, transparent 55%),
+      radial-gradient(700px 500px at -6% 18%, #e7ddc9 0%, transparent 58%),
+      var(--bg);
+    min-height:100vh; display:flex; align-items:flex-start; justify-content:center;
+    padding:48px 18px 80px;
+  }
+  .wrap{width:100%; max-width:760px;}
+
+  /* ---------- header ---------- */
+  .top{display:flex; align-items:center; justify-content:space-between; margin-bottom:34px;}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.15rem;}
+  .brand .dot{width:9px; height:9px; border-radius:50%; background:var(--cyan); box-shadow:0 0 14px 3px #0f7faeaa; animation:pulse 1.8s infinite;}
+  .brand .sub{color:var(--amber);}
+  @keyframes pulse{0%,100%{opacity:1; box-shadow:0 0 0 0 #0f7fae66;} 50%{opacity:.65; box-shadow:0 0 0 6px #0f7fae00;}}
+  .logout{
+    background:var(--surface); border:1px solid var(--border); color:var(--text-dim);
+    padding:9px 18px; border-radius:999px; font-family:inherit; font-size:.85rem; font-weight:600;
+    cursor:pointer; transition:.2s;
+  }
+  .logout:hover{background:var(--surface-2); color:var(--text);}
+
+  h1{font-size:1.5rem; font-weight:800; margin:0 0 4px;}
+  .sub{color:var(--text-dim); margin:0 0 32px; font-size:.92rem; line-height:1.7;}
+
+  /* ---------- login ---------- */
+  #login-view, #panel-view{display:none;}
+  .login-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:36px 32px; box-shadow:var(--shadow-md); max-width:400px; margin:60px auto 0;
+  }
+  .login-icon{
+    width:46px; height:46px; border-radius:14px; background:var(--cyan-soft); color:var(--cyan);
+    display:flex; align-items:center; justify-content:center; margin-bottom:18px; font-size:1.3rem;
+  }
+  .login-card h1{margin-bottom:6px;}
+  .login-card .sub{margin-bottom:26px;}
+  label{display:block; font-size:.82rem; color:var(--text-dim); font-weight:600; margin-bottom:7px;}
+  input{
+    width:100%; padding:12px 14px; border-radius:11px; border:1px solid var(--border);
+    background:#fff; font-family:inherit; font-size:.95rem; margin-bottom:16px; transition:.2s;
+    color:var(--text);
+  }
+  input:focus{outline:none; border-color:var(--cyan); box-shadow:0 0 0 3px var(--cyan-soft);}
+
+  button{font-family:inherit; cursor:pointer; border:none; border-radius:999px;}
+  .btn-primary{
+    background:var(--cyan); color:#fff; padding:12px 22px; font-weight:700; font-size:.92rem;
+    width:100%; transition:.2s; box-shadow:0 10px 24px -10px #0f7faeaa;
+  }
+  .btn-primary:hover{background:#0d6f98;}
+  .btn-primary:disabled{opacity:.5; cursor:not-allowed; box-shadow:none;}
+
+  .msg{font-size:.85rem; margin-top:12px; display:flex; align-items:center; gap:6px;}
+  .msg.error{color:var(--danger);}
+  .msg.ok{color:var(--ok);}
+
+  /* ---------- product cards ---------- */
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:26px 26px 24px; margin-bottom:20px; box-shadow:var(--shadow-sm); transition:box-shadow .25s var(--ease);
+  }
+  .card:hover{box-shadow:var(--shadow-md);}
+  .card-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:22px; gap:10px;}
+  .product-title{font-weight:800; font-size:1.1rem;}
+  .product-slug{
+    font-family:var(--ff-mono); direction:ltr; font-size:.7rem; color:var(--text-faint);
+    background:var(--surface-2); padding:3px 9px; border-radius:999px; border:1px solid var(--border-soft);
+  }
+
+  .fields{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:8px;}
+  .field-currency{grid-column:1 / -1;}
+  @media (max-width:520px){.fields{grid-template-columns:1fr;}}
+
+  /* currency segmented toggle */
+  .seg{
+    display:flex; background:var(--surface-2); border:1px solid var(--border); border-radius:999px;
+    padding:4px; gap:2px; width:fit-content;
+  }
+  .seg button{
+    padding:8px 20px; border-radius:999px; font-size:.82rem; font-weight:700; color:var(--text-faint);
+    font-family:var(--ff-mono); letter-spacing:.02em; transition:.2s;
+  }
+  .seg button.active{background:var(--cyan); color:#fff; box-shadow:0 6px 14px -6px #0f7fae99;}
+  .seg button:not(.active):hover{color:var(--text);}
+
+  .final-price{
+    display:flex; align-items:baseline; gap:8px; margin:18px 0 20px; padding:14px 16px;
+    background:var(--ok-soft); border:1px solid #0b8f7e33; border-radius:var(--radius-sm);
+  }
+  .final-price .label{font-size:.78rem; color:var(--text-dim); font-weight:600;}
+  .final-price .value{font-family:var(--ff-mono); font-size:1.15rem; font-weight:700; color:var(--ok); direction:ltr;}
+  .final-price .original{
+    font-family:var(--ff-mono); font-size:.85rem; color:var(--text-faint); text-decoration:line-through; direction:ltr;
+  }
+
+  .card-foot{display:flex; align-items:center; gap:16px;}
+  .save-btn{
+    background:var(--cyan); color:#fff; padding:11px 26px; font-weight:700; font-size:.88rem; transition:.2s;
+    box-shadow:0 10px 22px -10px #0f7faeaa;
+  }
+  .save-btn:hover{background:#0d6f98;}
+  .save-btn:disabled{opacity:.55; cursor:not-allowed; box-shadow:none;}
+
+  .loading{color:var(--text-dim); font-size:.9rem; text-align:center; padding:40px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div id="login-view">
+    <div class="login-card">
+      <div class="login-icon">🔒</div>
+      <h1>چوونەژوورەوەی ئەدمین</h1>
+      <p class="sub">Starlink Kurd — بەڕێوەبردنی نرخ</p>
+      <label>ناوی بەکارهێنەر</label>
+      <input id="login-user" autocomplete="username">
+      <label>وشەی نهێنی</label>
+      <input id="login-pass" type="password" autocomplete="current-password">
+      <button class="btn-primary" id="login-btn">چوونەژوورەوە</button>
+      <div class="msg error" id="login-msg"></div>
+    </div>
+  </div>
+
+  <div id="panel-view">
+    <div class="top">
+      <div class="brand"><span class="dot"></span>Starlink <span class="sub">Kurd</span></div>
+      <button class="logout" id="logout-btn">چوونەدەرەوە</button>
+    </div>
+    <h1>بەڕێوەبردنی نرخ</h1>
+    <p class="sub">نرخ، داشکاندن و دراوی هەر ئامێرێک لێرە دەستکاری بکە. گۆڕانکارییەکان یەکسەر لە ماڵپەڕ دەردەکەون.</p>
+    <div id="products-container"><div class="loading">... باردەکرێت</div></div>
+  </div>
+
+</div>
+
+<script>
+const API_BASE = window.location.origin;
+const CURRENCIES = ['USD','IQD'];
+const currencySymbol = { USD:'$', IQD:'IQD' };
+
+let token = null; // kept in memory only — re-login required after page reload
+
+const loginView = document.getElementById('login-view');
+const panelView = document.getElementById('panel-view');
+const loginMsg = document.getElementById('login-msg');
+const container = document.getElementById('products-container');
+
+function showLogin(){ loginView.style.display='block'; panelView.style.display='none'; }
+function showPanel(){ loginView.style.display='none'; panelView.style.display='block'; }
+
+document.getElementById('login-btn').addEventListener('click', async ()=>{
+  loginMsg.textContent = '';
+  const username = document.getElementById('login-user').value.trim();
+  const password = document.getElementById('login-pass').value;
+  try{
+    const res = await fetch(`${API_BASE}/api/admin/login`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ username, password })
+    });
+    const data = await res.json();
+    if(!res.ok){ loginMsg.textContent = data.error || 'هەڵە ڕوویدا'; return; }
+    token = data.token;
+    await loadProducts();
+    showPanel();
+  }catch(err){
+    loginMsg.textContent = 'نەتوانرا پەیوەندی بە سێرڤەرەوە بکرێت';
+  }
+});
+
+document.getElementById('logout-btn').addEventListener('click', ()=>{
+  token = null;
+  showLogin();
+});
+
+async function loadProducts(){
+  const res = await fetch(`${API_BASE}/api/admin/products`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  if(!res.ok){ showLogin(); return; }
+  const products = await res.json();
+  renderProducts(products);
+}
+
+function renderProducts(products){
+  container.innerHTML = '';
+  products.forEach(p=>{
+    let selectedCurrency = CURRENCIES.includes(p.currency) ? p.currency : 'USD';
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="product-title">${p.name}</div>
+        <div class="product-slug">${p.slug}</div>
+      </div>
+      <div class="fields">
+        <div>
+          <label>نرخی سەرەکی</label>
+          <input type="number" min="0" step="0.01" class="price-input" value="${p.price}">
+        </div>
+        <div>
+          <label>ڕێژەی داشکاندن (%)</label>
+          <input type="number" min="0" max="100" step="1" class="discount-input" value="${p.discount_percent}">
+        </div>
+        <div class="field-currency">
+          <label>دراو</label>
+          <div class="seg" data-currency-toggle>
+            <button type="button" data-value="USD">USD — دۆلار</button>
+            <button type="button" data-value="IQD">IQD — دیناری عێراقی</button>
+          </div>
+        </div>
+      </div>
+      <div class="final-price">
+        <span class="label">نرخی کۆتایی:</span>
+        <span class="value" data-final></span>
+        <span class="original" data-original></span>
+      </div>
+      <div class="card-foot">
+        <button class="save-btn">پاشەکەوتکردن</button>
+        <div class="msg" data-msg></div>
+      </div>
+    `;
+    const priceInput = card.querySelector('.price-input');
+    const discountInput = card.querySelector('.discount-input');
+    const finalEl = card.querySelector('[data-final]');
+    const originalEl = card.querySelector('[data-original]');
+    const msgEl = card.querySelector('[data-msg]');
+    const saveBtn = card.querySelector('.save-btn');
+    const segButtons = card.querySelectorAll('[data-currency-toggle] button');
+
+    function setCurrencyUI(){
+      segButtons.forEach(btn=>{
+        btn.classList.toggle('active', btn.dataset.value === selectedCurrency);
+      });
+    }
+
+    function updateFinalPreview(){
+      const price = parseFloat(priceInput.value) || 0;
+      const discount = parseFloat(discountInput.value) || 0;
+      const final = (price * (1 - discount/100)).toFixed(2);
+      const sym = currencySymbol[selectedCurrency];
+      finalEl.textContent = selectedCurrency === 'USD' ? `${sym}${final}` : `${final} ${sym}`;
+      if(discount > 0){
+        originalEl.textContent = selectedCurrency === 'USD' ? `${sym}${price.toFixed(2)}` : `${price.toFixed(2)} ${sym}`;
+      } else {
+        originalEl.textContent = '';
+      }
+    }
+
+    segButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        selectedCurrency = btn.dataset.value;
+        setCurrencyUI();
+        updateFinalPreview();
+      });
+    });
+
+    priceInput.addEventListener('input', updateFinalPreview);
+    discountInput.addEventListener('input', updateFinalPreview);
+    setCurrencyUI();
+    updateFinalPreview();
+
+    saveBtn.addEventListener('click', async ()=>{
+      msgEl.className = 'msg';
+      msgEl.textContent = '';
+      saveBtn.disabled = true;
+      try{
+        const res = await fetch(`${API_BASE}/api/admin/products/${p.slug}`, {
+          method:'PUT',
+          headers:{
+            'Content-Type':'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            price: parseFloat(priceInput.value),
+            discount_percent: parseFloat(discountInput.value) || 0,
+            currency: selectedCurrency
+          })
+        });
+        const data = await res.json();
+        if(!res.ok){
+          msgEl.classList.add('error');
+          msgEl.textContent = data.error || 'هەڵە ڕوویدا';
+        } else {
+          msgEl.classList.add('ok');
+          msgEl.textContent = 'پاشەکەوت کرا ✓';
+        }
+      }catch(err){
+        msgEl.classList.add('error');
+        msgEl.textContent = 'نەتوانرا پەیوەندی بکرێت';
+      }finally{
+        saveBtn.disabled = false;
+      }
+    });
+
+    container.appendChild(card);
+  });
+}
+
+showLogin();
+</script>
+</body>
+</html>

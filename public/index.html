@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starlink Kurd</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===================== TOKENS ===================== */
+:root{
+  --bg:#cccdc7;
+  --bg-elev:#f6f6f3;
+  --surface:#e3e4de;
+  --surface-2:#d6d7d0;
+  --glass:rgba(246,246,243,.62);
+  --border:#b6b8ad;
+  --border-soft:#c2c3bb;
+  --border-bright:#9a9c8f;
+  --text:#14181a;
+  --text-dim:#4a4f47;
+  --text-faint:#767b70;
+  --cyan:#0f7fae;
+  --cyan-2:#3aa3d1;
+  --teal:#0b8f7e;
+  --amber:#c06e1f;
+  --amber-2:#e0913f;
+  --amber-soft:#c06e1f22;
+  --cyan-soft:#0f7fae1a;
+  --danger:#c0392b;
+  --radius:18px;
+  --radius-sm:12px;
+  --maxw:1180px;
+  --ff-display:'Vazirmatn', sans-serif;
+  --ff-body:'Vazirmatn', sans-serif;
+  --ff-mono:'JetBrains Mono', monospace;
+  --ff-rtl:'Vazirmatn', sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --shadow-sm:0 4px 14px -4px rgba(20,24,20,.14);
+  --shadow-md:0 24px 50px -16px rgba(20,24,20,.22);
+  --shadow-lg:0 40px 90px -22px rgba(20,24,20,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:
+    radial-gradient(1200px 700px at 84% -8%, #dfe6de 0%, transparent 55%),
+    radial-gradient(900px 620px at -8% 22%, #e7ddc9 0%, transparent 58%),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--ff-body);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+}
+/* fine grain texture for depth */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.02;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+html[dir="rtl"] body{font-family:var(--ff-rtl);}
+html[dir="rtl"] .mono{font-family:var(--ff-mono);direction:ltr;display:inline-block;}
+img,svg{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+ul{list-style:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+::selection{background:var(--cyan);color:#04101c;}
+
+/* background stars */
+.stars{position:fixed;inset:0;z-index:2;pointer-events:none;}
+#starfield{display:none;}
+
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease), transform .8s var(--ease);}
+.reveal.in{opacity:1;transform:translateY(0);}
+.reveal-stagger > *{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease), transform .7s var(--ease);}
+.reveal-stagger.in > *{opacity:1;transform:translateY(0);}
+.reveal-stagger.in > *:nth-child(1){transition-delay:.05s;}
+.reveal-stagger.in > *:nth-child(2){transition-delay:.15s;}
+.reveal-stagger.in > *:nth-child(3){transition-delay:.25s;}
+.reveal-stagger.in > *:nth-child(4){transition-delay:.35s;}
+
+/* ===================== NAV ===================== */
+header{
+  position:sticky;top:0;z-index:50;background:rgba(246,246,243,.75);
+  backdrop-filter:blur(16px) saturate(140%);
+  border-bottom:1px solid var(--border-soft);
+  transition:height .35s var(--ease), background .35s;
+}
+header.scrolled{background:rgba(246,246,243,.94);}
+.nav{display:flex;align-items:center;justify-content:space-between;height:76px;transition:height .35s var(--ease);}
+header.scrolled .nav{height:64px;}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--ff-display);font-weight:700;font-size:1.25rem;letter-spacing:.01em;}
+html[dir="rtl"] .logo{font-family:var(--ff-rtl);font-weight:800;}
+.logo .dot{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px 3px #0f7faeaa;animation:pulse 1.8s infinite;}
+.logo span.brand-sub{color:var(--amber);}
+.nav-links{display:flex;gap:4px;align-items:center;}
+.nav-links a{position:relative;padding:10px 16px;border-radius:999px;font-size:.92rem;color:var(--text-dim);font-weight:500;transition:.25s;}
+.nav-links a::after{content:'';position:absolute;left:16px;right:16px;bottom:6px;height:1.5px;background:var(--cyan);transform:scaleX(0);transform-origin:center;transition:transform .3s var(--ease);}
+.nav-links a:hover{color:var(--text);}
+.nav-links a:hover::after{transform:scaleX(1);}
+.nav-right{display:flex;align-items:center;gap:14px;}
+.langsw{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:4px;gap:2px;}
+.langsw button{padding:7px 13px;border-radius:999px;font-size:.78rem;font-weight:600;color:var(--text-faint);letter-spacing:.03em;font-family:var(--ff-mono);transition:.2s;}
+.langsw button.active{background:var(--cyan);color:#04101c;}
+.burger{display:none;width:40px;height:40px;border-radius:10px;border:1px solid var(--border);align-items:center;justify-content:center;}
+.burger span{display:block;width:16px;height:2px;background:var(--text);position:relative;}
+.burger span::before,.burger span::after{content:'';position:absolute;width:16px;height:2px;background:var(--text);left:0;}
+.burger span::before{top:-5px;}
+.burger span::after{top:5px;}
+
+/* ===================== HERO ===================== */
+.hero{position:relative;padding:100px 0 50px;overflow:hidden;}
+.hero-bg-fallback{
+  position:absolute;inset:0;z-index:-3;
+  background:
+    radial-gradient(900px 600px at 78% 8%, #0f7fae33 0%, transparent 60%),
+    radial-gradient(700px 500px at 8% 90%, #c06e1f22 0%, transparent 60%),
+    linear-gradient(160deg,#dcdedb 0%, #c7c9c2 100%);
+}
+.hero-bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:saturate(2) contrast(1.15) brightness(1.05);}
+/* On mobile/cellular connections many browsers refuse to autoplay background video
+   (Data Saver / Lite mode, low-power mode, weak connection). When that happens the
+   video has no visible content and, with no fallback, the hero looks empty.
+   .hero-bg-fallback (above) always renders underneath, so there is never a blank
+   background, and we hide the <video> entirely if JS detects it failed to play. */
+.hero.video-unavailable .hero-bg-video{display:none;}
+.hero-bg-overlay{position:absolute;inset:0;z-index:-1;background:linear-gradient(115deg, rgba(246,246,243,.32) 0%, rgba(246,246,243,.12) 45%, rgba(246,246,243,0) 100%);}
+@media (max-width:960px){.hero-bg-overlay{background:linear-gradient(180deg, rgba(246,246,243,.2) 0%, rgba(246,246,243,.45) 100%);}}
+.hero::before{
+  content:'';position:absolute;top:-200px;inset-inline-end:-160px;width:640px;height:640px;border-radius:50%;
+  background:radial-gradient(circle, #0f7fae22 0%, transparent 70%);pointer-events:none;filter:blur(10px);
+  animation:ambientDrift 12s ease-in-out infinite;
+}
+@keyframes ambientDrift{
+  0%,100%{transform:translate(0,0) scale(1);}
+  50%{transform:translate(-30px,30px) scale(1.08);}
+}
+@media (prefers-reduced-motion: reduce){.hero::before{animation:none;}}
+.hero-grid{display:grid;grid-template-columns:1fr;max-width:720px;margin-left:auto;margin-right:0;text-align:start;gap:40px;align-items:center;position:relative;z-index:1;}
+.hero-copy{
+  background:linear-gradient(135deg, rgba(246,246,243,.5), rgba(246,246,243,.28));
+  backdrop-filter:blur(14px) saturate(120%);
+  border:1px solid rgba(255,255,255,.4);
+  border-radius:24px;
+  padding:34px;
+  box-shadow:var(--shadow-md);
+}
+@media (max-width:960px){.hero-copy{padding:26px;}}
+.float-card{
+  position:absolute;background:var(--glass);border:1px solid var(--border-bright);border-radius:14px;
+  padding:10px 16px;backdrop-filter:blur(10px);font-family:var(--ff-mono);font-size:.76rem;color:var(--text-dim);
+  display:flex;align-items:center;gap:8px;animation:floaty 5s ease-in-out infinite;box-shadow:var(--shadow-md);
+}
+.float-card b{color:var(--text);font-size:.9rem;}
+.float-card.fc1{top:8%;inset-inline-start:-2%;animation-delay:0s;}
+.float-card.fc2{bottom:6%;inset-inline-end:2%;animation-delay:1.4s;}
+@keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@media (max-width:960px){.float-card{display:none;}}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--ff-mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--cyan);background:var(--cyan-soft);border:1px solid #0f7fae33;
+  padding:7px 14px;border-radius:999px;margin-bottom:22px;
+}
+html[dir="rtl"] .eyebrow{font-family:var(--ff-rtl);font-size:.85rem;letter-spacing:0;text-transform:none;}
+.eyebrow .pulse{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 #0f7fae66;}50%{opacity:.6;box-shadow:0 0 0 6px #0f7fae00;}}
+.hero h1{
+  font-family:var(--ff-display);font-weight:700;
+  font-size:clamp(2.3rem,4.6vw,3.6rem);line-height:1.08;letter-spacing:-.01em;
+  margin-bottom:22px;
+}
+html[dir="rtl"] .hero h1{font-family:var(--ff-rtl);font-weight:800;letter-spacing:0;line-height:1.3;}
+.hero h1 .accent{color:var(--cyan);}
+.hero p.lead{color:var(--text-dim);font-size:1.08rem;max-width:520px;margin-bottom:34px;}
+html[dir="rtl"] .hero p.lead{font-size:1.05rem;}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px;justify-content:flex-start;}
+.btn{
+  padding:14px 28px;border-radius:12px;font-weight:600;font-size:.95rem;
+  display:inline-flex;align-items:center;gap:8px;transition:.3s var(--ease);
+  position:relative;overflow:hidden;isolation:isolate;
+}
+.btn-primary{background:linear-gradient(135deg,var(--cyan-2),var(--cyan));color:#04101c;box-shadow:0 8px 28px -8px #0f7fae77;}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,#ffffff80 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s var(--ease);z-index:-1;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 34px -8px #0f7fae99;}
+.btn-primary:hover::before{transform:translateX(120%);}
+.btn-ghost{border:1px solid var(--border-bright);color:var(--text);background:var(--glass);backdrop-filter:blur(6px);}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan-2);transform:translateY(-3px);}
+.hero-stats{display:flex;gap:34px;flex-wrap:wrap;justify-content:flex-start;}
+.hero-stats .stat b{display:block;font-family:var(--ff-mono);font-size:1.5rem;color:var(--text);}
+.hero-stats .stat span{font-size:.78rem;color:var(--text-faint);}
+
+/* Signature orbital visual */
+.orbit-wrap{position:relative;aspect-ratio:1/1;max-width:460px;margin-inline-start:auto;}
+.orbit-wrap svg{width:100%;height:100%;overflow:visible;}
+.orbit-path{fill:none;stroke:#aeb0a4;stroke-width:1;stroke-dasharray:2 6;}
+.orbit-path.p2{stroke-dasharray:1 5;opacity:.6;}
+.sat{filter:drop-shadow(0 0 6px #0f7faeaa);}
+.sat-glow{animation:satpulse 2.4s infinite ease-in-out;}
+@keyframes satpulse{0%,100%{opacity:.9;}50%{opacity:.4;}}
+.beam{stroke:var(--cyan);stroke-width:1.4;opacity:0;stroke-dasharray:3 5;animation:beamflow 2.6s infinite;}
+@keyframes beamflow{0%{opacity:0;stroke-dashoffset:0;}15%{opacity:.9;}85%{opacity:.5;}100%{opacity:0;stroke-dashoffset:40;}}
+.mountain{fill:url(#mgrad);}
+.dish-glow{animation:dishpulse 2.6s infinite;}
+@keyframes dishpulse{0%,100%{opacity:.15;}50%{opacity:.55;}}
+
+/* ===================== SECTION SHARED ===================== */
+section{position:relative;z-index:5;padding:96px 0;}
+.section-head{max-width:640px;margin-bottom:56px;}
+.section-head .eyebrow{margin-bottom:16px;}
+.section-head h2{
+  font-family:var(--ff-display);font-weight:700;font-size:clamp(1.8rem,3.2vw,2.6rem);
+  letter-spacing:-.01em;margin-bottom:14px;
+}
+html[dir="rtl"] .section-head h2{font-family:var(--ff-rtl);font-weight:800;letter-spacing:0;}
+.section-head p{color:var(--text-dim);font-size:1.02rem;}
+.center{text-align:center;margin-inline:auto;}
+
+/* ===================== PRODUCTS ===================== */
+.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+.product-card{
+  background:linear-gradient(180deg,var(--surface) 0%, var(--bg-elev) 100%);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:36px;position:relative;overflow:hidden;
+  transition:transform .45s var(--ease), border-color .45s, box-shadow .45s;
+}
+.product-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
+.product-card.mini{border-color:#0f7fae33;}
+.product-card.standard{border-color:#c06e1f33;}
+.product-card.mini:hover{border-color:#0f7fae88;}
+.product-card.standard:hover{border-color:#c06e1f88;}
+.product-card::before{
+  content:'';position:absolute;top:-60px;inset-inline-end:-60px;width:220px;height:220px;border-radius:50%;
+  filter:blur(64px);opacity:.32;transition:opacity .45s;
+}
+.product-card:hover::before{opacity:.5;}
+.product-card.mini::before{background:var(--cyan);}
+.product-card.standard::before{background:var(--amber);}
+.product-visual{
+  position:relative;z-index:1;height:150px;margin-bottom:24px;border-radius:14px;
+  background:radial-gradient(ellipse at center, #12172c06 0%, transparent 70%);
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border-soft);
+  overflow:hidden;
+}
+.product-visual svg{overflow:visible;}
+.product-visual:has(img){height:420px;background:#eceee9;padding:0;}
+.product-visual img{width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:12px;}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;position:relative;z-index:1;}
+.card-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);}
+.product-card.mini .card-icon{background:var(--cyan-soft);}
+.product-card.standard .card-icon{background:var(--amber-soft);}
+.badge{font-family:var(--ff-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:999px;border:1px solid var(--border);color:var(--text-faint);}
+.product-card .badge{display:none;}
+html[dir="rtl"] .badge{font-family:var(--ff-rtl);font-size:.78rem;letter-spacing:0;text-transform:none;}
+.product-card h3{font-family:var(--ff-display);font-size:1.55rem;font-weight:700;margin-bottom:6px;position:relative;z-index:1;}
+html[dir="rtl"] .product-card h3{font-family:var(--ff-rtl);font-weight:800;}
+.product-card .tagline{font-size:.92rem;color:var(--cyan);margin-bottom:16px;font-weight:600;position:relative;z-index:1;}
+.product-card.standard .tagline{color:var(--amber);}
+.product-card .desc{color:var(--text-dim);font-size:.94rem;margin-bottom:24px;position:relative;z-index:1;}
+.feat-list{display:grid;gap:11px;margin-bottom:26px;position:relative;z-index:1;}
+.feat-list li{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--text);}
+.feat-list li svg{flex-shrink:0;margin-top:3px;}
+.product-card.mini .feat-list li svg{color:var(--cyan);}
+.product-card.standard .feat-list li svg{color:var(--amber);}
+.price-box{display:flex;align-items:baseline;gap:10px;margin-bottom:20px;position:relative;z-index:1;min-height:1.6rem;}
+.price-box .price-loading{font-size:.82rem;color:var(--text-faint);font-family:var(--ff-mono);}
+.price-box .price-final{font-family:var(--ff-display);font-weight:700;font-size:1.5rem;color:var(--text);}
+html[dir="rtl"] .price-box .price-final{font-family:var(--ff-rtl);}
+.price-box .price-original{font-size:.92rem;color:var(--text-faint);text-decoration:line-through;}
+.price-box .discount-badge{
+  font-family:var(--ff-mono);font-size:.7rem;font-weight:700;letter-spacing:.02em;
+  color:#fff;background:var(--danger);border-radius:999px;padding:3px 9px;
+}
+html[dir="rtl"] .price-box .discount-badge{font-family:var(--ff-rtl);}
+.bestfor{border-top:1px solid var(--border);padding-top:20px;position:relative;z-index:1;}
+.bestfor h4{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:12px;}
+html[dir="rtl"] .bestfor h4{font-family:var(--ff-rtl);font-size:.82rem;letter-spacing:0;text-transform:none;}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{font-size:.8rem;padding:6px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-dim);}
+
+/* ===================== COMPARE TABLE ===================== */
+.compare-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);}
+table{width:100%;border-collapse:collapse;background:var(--glass);backdrop-filter:blur(10px);min-width:560px;}
+thead th{
+  font-family:var(--ff-mono);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);
+  text-align:start;padding:18px 22px;background:var(--bg-elev);border-bottom:1px solid var(--border);
+}
+html[dir="rtl"] thead th{font-family:var(--ff-rtl);font-size:.85rem;letter-spacing:0;text-transform:none;}
+thead th:nth-child(2){color:var(--cyan);}
+thead th:nth-child(3){color:var(--amber);}
+tbody td{padding:17px 22px;border-bottom:1px solid var(--border-soft);font-size:.92rem;transition:background .25s;}
+tbody tr:last-child td{border-bottom:none;}
+tbody td:first-child{color:var(--text-dim);font-family:var(--ff-mono);font-size:.85rem;}
+html[dir="rtl"] tbody td:first-child{font-family:var(--ff-rtl);font-size:.92rem;}
+tbody tr:hover td{background:var(--surface-2);}
+tbody td:nth-child(2){position:relative;}
+tbody td:nth-child(2)::before{content:'';position:absolute;inset-inline-start:0;top:14%;bottom:14%;width:2px;background:linear-gradient(var(--cyan),transparent);opacity:.5;}
+tbody td:nth-child(3){position:relative;}
+tbody td:nth-child(3)::before{content:'';position:absolute;inset-inline-start:0;top:14%;bottom:14%;width:2px;background:linear-gradient(var(--amber),transparent);opacity:.5;}
+
+/* ===================== TRUST / WHY US ===================== */
+.marquee-wrap{
+  border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft);
+  background:var(--surface);overflow:hidden;padding:16px 0;position:relative;z-index:5;
+}
+.marquee-track{display:flex;width:max-content;gap:0;animation:marquee 26s linear infinite;}
+.marquee-item{display:flex;align-items:center;gap:10px;padding:0 28px;font-family:var(--ff-mono);font-size:.82rem;color:var(--text-dim);white-space:nowrap;letter-spacing:.02em;}
+html[dir="rtl"] .marquee-item{font-family:var(--ff-rtl);font-size:.92rem;}
+.marquee-item .sep{width:5px;height:5px;border-radius:50%;background:var(--cyan);opacity:.6;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+html[dir="rtl"] .marquee-track{animation-name:marquee-rtl;}
+@keyframes marquee-rtl{from{transform:translateX(0);}to{transform:translateX(50%);}}
+@media (prefers-reduced-motion: reduce){.marquee-track{animation:none;}}
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+/* ===================== USAGE CAROUSEL ===================== */
+.usage-wrap{
+  overflow:hidden;padding:32px 0;background:var(--surface);
+  border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft);
+  position:relative;z-index:5;
+}
+.usage-wrap::before{
+  content:'';position:absolute;top:60%;left:50%;width:900px;height:900px;transform:translate(-50%,-50%);
+  background:radial-gradient(circle, #0f7fae10 0%, transparent 65%);pointer-events:none;
+}
+.usage-wrap .section-head{margin-bottom:52px;}
+.usage-stage{overflow:hidden;position:relative;}
+.usage-stage::before,.usage-stage::after{
+  content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none;
+}
+.usage-stage::before{inset-inline-start:0;background:linear-gradient(to right, var(--surface), transparent);}
+.usage-stage::after{inset-inline-end:0;background:linear-gradient(to left, var(--surface), transparent);}
+html[dir="rtl"] .usage-stage::before{background:linear-gradient(to left, var(--surface), transparent);}
+html[dir="rtl"] .usage-stage::after{background:linear-gradient(to right, var(--surface), transparent);}
+.usage-track{display:flex;width:max-content;gap:26px;animation:usage-scroll 46s linear infinite;}
+.usage-card{
+  position:relative;width:300px;height:400px;flex-shrink:0;
+  border-radius:22px;overflow:hidden;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow-md);
+  transition:transform .35s var(--ease), box-shadow .35s;
+  background:linear-gradient(160deg,#2a2f2c,#12151a);
+}
+.usage-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
+.usage-card img{width:100%;height:100%;object-fit:cover;display:block;}
+/* Always scrolls visually left-to-right (rightward), regardless of page direction */
+@keyframes usage-scroll{from{transform:translateX(-50%);}to{transform:translateX(0);}}
+html[dir="rtl"] .usage-track{animation-name:usage-scroll-rtl;}
+@keyframes usage-scroll-rtl{from{transform:translateX(0);}to{transform:translateX(50%);}}
+@media (prefers-reduced-motion: reduce){.usage-track{animation:none;}}
+@media (max-width:600px){
+  .usage-card{width:220px;height:290px;}
+  .usage-stage::before,.usage-stage::after{width:40px;}
+}
+.trust-card{
+  background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:26px 22px;transition:transform .4s var(--ease), border-color .4s;position:relative;overflow:hidden;
+}
+.trust-card:hover{transform:translateY(-5px);border-color:var(--border-bright);}
+.trust-card .ticon{
+  width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+  background:linear-gradient(135deg,#0f7fae22,#0b8f7e22);color:var(--cyan);
+}
+.trust-card:nth-child(2n) .ticon{background:linear-gradient(135deg,#c06e1f22,#e0913f22);color:var(--amber);}
+.trust-card h4{font-family:var(--ff-display);font-size:1.02rem;font-weight:700;margin-bottom:8px;}
+html[dir="rtl"] .trust-card h4{font-family:var(--ff-rtl);font-weight:800;}
+.trust-card p{font-size:.85rem;color:var(--text-dim);}
+
+/* ===================== COMMON FEATURES ===================== */
+.common-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.common-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:26px;}
+.common-card .num{font-family:var(--ff-mono);color:var(--teal);font-size:.8rem;margin-bottom:14px;}
+.common-card p{font-size:.94rem;color:var(--text);}
+
+/* ===================== SPEED ===================== */
+.speed-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.speed-card{
+  background:linear-gradient(180deg,var(--surface),var(--bg-elev));border:1px solid var(--border);border-radius:var(--radius);
+  padding:32px;display:flex;gap:26px;align-items:center;flex-wrap:wrap;
+  transition:transform .4s var(--ease), border-color .4s;
+}
+.speed-card:hover{transform:translateY(-4px);}
+.speed-card.mini:hover{border-color:#0f7fae66;}
+.speed-card.standard:hover{border-color:#c06e1f66;}
+.speed-card .label{font-family:var(--ff-mono);font-size:.78rem;color:var(--text-faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+html[dir="rtl"] .speed-card .label{font-family:var(--ff-rtl);text-transform:none;letter-spacing:0;font-size:.88rem;}
+.gauge{
+  --pct:0;
+  width:132px;height:132px;border-radius:50%;flex-shrink:0;position:relative;
+  background:conic-gradient(var(--g-color) calc(var(--pct)*1%), var(--surface-2) 0);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .1s linear;
+}
+.speed-card.mini .gauge{--g-color:var(--cyan);}
+.speed-card.standard .gauge{--g-color:var(--amber);}
+.gauge::before{content:'';position:absolute;inset:12px;border-radius:50%;background:var(--bg-elev);box-shadow:inset 0 2px 8px rgba(30,41,71,.1);}
+.gauge-inner{position:relative;z-index:1;text-align:center;}
+.gauge-inner b{display:block;font-family:var(--ff-display);font-size:1.5rem;font-weight:700;}
+.gauge-inner span{font-family:var(--ff-mono);font-size:.65rem;color:var(--text-faint);letter-spacing:.05em;}
+.speed-value{font-family:var(--ff-display);font-size:1.6rem;font-weight:700;}
+.speed-sub{color:var(--text-dim);font-size:.88rem;margin-top:6px;max-width:220px;}
+
+/* ===================== CONTACT ===================== */
+.contact-wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;}
+.contact-info{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;}
+.contact-info h3{font-family:var(--ff-display);font-size:1.3rem;margin-bottom:18px;}
+html[dir="rtl"] .contact-info h3{font-family:var(--ff-rtl);font-weight:800;}
+.info-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;font-size:.92rem;color:var(--text-dim);}
+.info-row svg{flex-shrink:0;color:var(--cyan);margin-top:2px;}
+.social-row{display:flex;gap:10px;margin-top:14px;}
+html[dir="rtl"] .info-row,html[dir="rtl"] .social-row{justify-content:flex-end;}
+.social-row a{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;transition:.2s;}
+.social-row a:hover{border-color:var(--cyan);color:var(--cyan);}
+form{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.field{display:flex;flex-direction:column;gap:8px;}
+.field.full{grid-column:1/-1;}
+.field label{font-size:.82rem;color:var(--text-faint);font-weight:600;}
+.field input,.field textarea{
+  background:var(--bg-elev);border:1px solid var(--border);border-radius:10px;padding:12px 14px;
+  color:var(--text);font-family:inherit;font-size:.92rem;resize:vertical;transition:.2s;
+}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px #0f7fae22;}
+.submit-row{display:flex;align-items:center;gap:16px;margin-top:6px;}
+.form-note{font-size:.82rem;color:var(--text-faint);}
+.toast{display:none;align-items:center;gap:8px;color:var(--teal);font-size:.88rem;font-weight:600;}
+.toast.show{display:flex;}
+
+/* ===================== FOOTER ===================== */
+footer{border-top:1px solid var(--border-soft);padding:34px 0;position:relative;z-index:5;background:var(--bg-elev);}
+.footer-row{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:14px;}
+.footer-row p{color:var(--text-faint);font-size:.82rem;}
+
+/* ===================== FOCUS / MOTION ===================== */
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--cyan);outline-offset:2px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001s !important;transition-duration:.001s !important;}
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width:960px){
+  .hero-grid{grid-template-columns:1fr;}
+  .orbit-wrap{max-width:340px;margin-inline:auto;order:-1;}
+  .products-grid,.common-grid,.speed-grid,.contact-wrap{grid-template-columns:1fr;}
+  .trust-grid{grid-template-columns:repeat(2,1fr);}
+  .form-row{grid-template-columns:1fr;}
+}
+@media (max-width:760px){
+  .nav-links{display:none;}
+  .burger{display:flex;}
+  .hero{padding-top:56px;}
+  section{padding:64px 0;}
+}
+@media (max-width:600px){
+  .container{padding:0 18px;}
+  .hero{padding:80px 0 34px;}
+  .hero-grid{max-width:100%;gap:24px;}
+  .hero-copy{padding:22px;border-radius:18px;}
+  .hero h1{margin-bottom:16px;}
+  .hero p.lead{font-size:.98rem;margin-bottom:26px;}
+  .eyebrow{font-size:.72rem;padding:6px 12px;margin-bottom:16px;}
+  html[dir="rtl"] .eyebrow{font-size:.78rem;}
+  .cta-row{flex-direction:column;margin-bottom:30px;}
+  .cta-row .btn{width:100%;justify-content:center;}
+  .hero-stats{gap:18px 28px;justify-content:space-between;}
+  .hero-stats .stat b{font-size:1.25rem;}
+  .trust-grid{grid-template-columns:1fr;}
+  section{padding:52px 0;}
+  .section-head{margin-bottom:36px;}
+  .speed-card{padding:22px;gap:18px;}
+  .contact-info,form{padding:22px;}
+  .compare-wrap{margin-inline:-18px;border-radius:0;border-inline:none;width:calc(100% + 36px);}
+}
+/* ===================== FLOATING WHATSAPP BUTTON ===================== */
+.wa-float{
+  position:fixed;bottom:24px;inset-inline-end:24px;z-index:80;
+  width:64px;height:64px;border-radius:50%;
+  background:#25D366;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 20px rgba(37,211,102,.45);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.wa-float:hover{transform:scale(1.08);box-shadow:0 8px 26px rgba(37,211,102,.6);}
+.wa-float::before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:#25D366;opacity:.55;animation:wa-pulse 2.2s infinite;z-index:-1;
+}
+@keyframes wa-pulse{
+  0%{transform:scale(1);opacity:.55;}
+  100%{transform:scale(1.7);opacity:0;}
+}
+@media (max-width:600px){
+  .wa-float{width:56px;height:56px;bottom:18px;inset-inline-end:18px;}
+}
+@media (prefers-reduced-motion: reduce){
+  .wa-float::before{animation:none;display:none;}
+}
+</style>
+</head>
+<body class="lang-ku">
+<canvas id="starfield"></canvas>
+
+<header>
+  <div class="container nav">
+    <a href="#home" class="logo" dir="ltr"><span class="dot"></span>Starlink <span class="brand-sub">Kurd</span></a>
+    <nav class="nav-links">
+      <a href="#home" data-i18n="nav.home"></a>
+      <a href="#products" data-i18n="nav.products"></a>
+      <a href="#compare" data-i18n="nav.compare"></a>
+      <a href="#contact" data-i18n="nav.contact"></a>
+    </nav>
+    <div class="nav-right">
+      <div class="langsw" role="group" aria-label="Language switch">
+        <button data-lang="ku" class="active">KU</button>
+        <button data-lang="en">EN</button>
+        <button data-lang="ar">AR</button>
+      </div>
+      <button class="burger" aria-label="menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ===================== HERO ===================== -->
+  <section id="home" class="hero">
+    <div class="hero-bg-fallback"></div>
+    <video class="hero-bg-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
+      <source src="Erbil_Citadel_and_Starlink_dish_202607262245.mp4" type="video/mp4">
+    </video>
+    <div class="hero-bg-overlay"></div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse"></span><span data-i18n="hero.eyebrow"></span></div>
+        <h1 data-i18n="hero.title"></h1>
+        <p class="lead" data-i18n="hero.subtitle"></p>
+        <div class="cta-row">
+          <a href="#products" class="btn btn-primary" data-i18n="hero.cta1"></a>
+          <a href="#contact" class="btn btn-ghost" data-i18n="hero.cta2"></a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><b class="mono" data-count="2" data-suffix="">0</b><span data-i18n="hero.stat1"></span></div>
+          <div class="stat"><b class="mono" data-count="400" data-suffix="+">0</b><span data-i18n="hero.stat2"></span></div>
+          <div class="stat"><b class="mono" data-count="1.1" data-suffix="kg" data-decimal="1">0</b><span data-i18n="hero.stat3"></span></div>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- ===================== MARQUEE TICKER ===================== -->
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="marquee-track"></div>
+  </div>
+
+  <!-- ===================== TRUST / WHY US ===================== -->
+  <section id="trust">
+    <div class="container">
+      <div class="section-head center reveal">
+        <div class="eyebrow" style="justify-content:center;"><span class="pulse"></span><span data-i18n="trust.eyebrow"></span></div>
+        <h2 data-i18n="trust.title"></h2>
+      </div>
+      <div class="trust-grid reveal-stagger" id="trust-grid">
+        <div class="trust-card">
+          <div class="ticon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></div>
+          <h4 data-i18n="trust.i1.h"></h4><p data-i18n="trust.i1.p"></p>
+        </div>
+        <div class="trust-card">
+          <div class="ticon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20 9 8l4 6 3-5 5 11z"/></svg></div>
+          <h4 data-i18n="trust.i2.h"></h4><p data-i18n="trust.i2.p"></p>
+        </div>
+        <div class="trust-card">
+          <div class="ticon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h4 data-i18n="trust.i3.h"></h4><p data-i18n="trust.i3.p"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== USAGE CAROUSEL ===================== -->
+  <!-- Put your 6 photos in a folder named "images" next to this HTML file,
+       named exactly: images/gallery-1.jpg ... images/gallery-6.jpg -->
+  <div class="usage-wrap">
+    <div class="usage-stage">
+      <div class="usage-track" id="usage-track">
+        <div class="usage-card acc-cyan">
+          <img src="images/gallery-1.jpg" alt="Starlink - home &amp; office" loading="lazy">
+        </div>
+        <div class="usage-card acc-amber">
+          <img src="images/gallery-2.jpg" alt="Starlink - travel &amp; road trips" loading="lazy">
+        </div>
+        <div class="usage-card acc-cyan">
+          <img src="images/gallery-3.jpg" alt="Starlink - small business" loading="lazy">
+        </div>
+        <div class="usage-card acc-amber">
+          <img src="images/gallery-4.jpg" alt="Starlink - camping" loading="lazy">
+        </div>
+        <div class="usage-card acc-cyan">
+          <img src="images/gallery-5.jpg" alt="Starlink - always-on use" loading="lazy">
+        </div>
+        <div class="usage-card acc-amber">
+          <img src="images/gallery-6.jpg" alt="Starlink - remote work" loading="lazy">
+        </div>
+        <!-- duplicated set for a seamless infinite loop -->
+        <div class="usage-card acc-cyan" aria-hidden="true">
+          <img src="images/gallery-1.jpg" alt="" loading="lazy">
+        </div>
+        <div class="usage-card acc-amber" aria-hidden="true">
+          <img src="images/gallery-2.jpg" alt="" loading="lazy">
+        </div>
+        <div class="usage-card acc-cyan" aria-hidden="true">
+          <img src="images/gallery-3.jpg" alt="" loading="lazy">
+        </div>
+        <div class="usage-card acc-amber" aria-hidden="true">
+          <img src="images/gallery-4.jpg" alt="" loading="lazy">
+        </div>
+        <div class="usage-card acc-cyan" aria-hidden="true">
+          <img src="images/gallery-5.jpg" alt="" loading="lazy">
+        </div>
+        <div class="usage-card acc-amber" aria-hidden="true">
+          <img src="images/gallery-6.jpg" alt="" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PRODUCTS ===================== -->
+  <section id="products">
+    <div class="container">
+      <div class="section-head center reveal">
+        <div class="eyebrow" style="justify-content:center;"><span class="pulse"></span><span data-i18n="products.eyebrow"></span></div>
+        <h2 data-i18n="products.title"></h2>
+      </div>
+
+      <div class="products-grid reveal-stagger">
+        <!-- MINI -->
+        <div class="product-card mini">
+          <div class="product-visual">
+            <img src="starlink-mini.jpg" alt="Starlink Mini">
+          </div>
+          <div class="card-top">
+            <span class="badge" data-i18n="products.mini.badge"></span>
+          </div>
+          <h3>Starlink Mini</h3>
+          <div class="tagline" data-i18n="products.mini.tagline"></div>
+          <p class="desc" data-i18n="products.mini.desc"></p>
+          <div class="price-box" id="mini-price" data-slug="mini"></div>
+          <ul class="feat-list" id="mini-features"></ul>
+          <div class="bestfor">
+            <h4 data-i18n="products.bestfor_label"></h4>
+            <div class="chip-row" id="mini-bestfor"></div>
+          </div>
+        </div>
+
+        <!-- STANDARD -->
+        <div class="product-card standard">
+          <div class="product-visual">
+            <img src="starlink-standard.jpg" alt="Starlink Standard V4">
+          </div>
+          <div class="card-top">
+            <span class="badge" data-i18n="products.standard.badge"></span>
+          </div>
+          <h3>Starlink Standard V4</h3>
+          <div class="tagline" data-i18n="products.standard.tagline"></div>
+          <p class="desc" data-i18n="products.standard.desc"></p>
+          <div class="price-box" id="standard-price" data-slug="standard-v4"></div>
+          <ul class="feat-list" id="standard-features"></ul>
+          <div class="bestfor">
+            <h4 data-i18n="products.bestfor_label"></h4>
+            <div class="chip-row" id="standard-bestfor"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COMPARE ===================== -->
+  <section id="compare">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="pulse"></span><span data-i18n="compare.eyebrow"></span></div>
+        <h2 data-i18n="compare.title"></h2>
+      </div>
+      <div class="compare-wrap reveal">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="compare.h0"></th>
+              <th>Starlink Mini</th>
+              <th>Standard V4</th>
+            </tr>
+          </thead>
+          <tbody id="compare-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COMMON FEATURES ===================== -->
+  <section id="common">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="pulse"></span><span data-i18n="common.eyebrow"></span></div>
+        <h2 data-i18n="common.title"></h2>
+      </div>
+      <div class="common-grid reveal-stagger" id="common-grid"></div>
+    </div>
+  </section>
+
+  <!-- ===================== SPEED ===================== -->
+  <section id="speed">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="pulse"></span><span data-i18n="speed.eyebrow"></span></div>
+        <h2 data-i18n="speed.title"></h2>
+      </div>
+      <div class="speed-grid reveal-stagger">
+        <div class="speed-card mini">
+          <div class="gauge" id="gauge-mini"><div class="gauge-inner"><b class="mono">300+</b><span>MBPS</span></div></div>
+          <div>
+            <div class="label">Starlink Mini</div>
+            <div class="speed-value">300+ <span class="mono" style="font-size:.95rem;color:var(--text-faint);">Mbps</span></div>
+            <div class="speed-sub" data-i18n="speed.mini"></div>
+          </div>
+        </div>
+        <div class="speed-card standard">
+          <div class="gauge" id="gauge-standard"><div class="gauge-inner"><b class="mono">400+</b><span>MBPS</span></div></div>
+          <div>
+            <div class="label">Starlink Standard V4</div>
+            <div class="speed-value">400+ <span class="mono" style="font-size:.95rem;color:var(--text-faint);">Mbps</span></div>
+            <div class="speed-sub" data-i18n="speed.standard"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="pulse"></span><span data-i18n="contact.eyebrow"></span></div>
+        <h2 data-i18n="contact.title"></h2>
+        <p data-i18n="contact.subtitle"></p>
+      </div>
+
+      <div class="contact-wrap reveal">
+        <div class="contact-info">
+          <h3 data-i18n="contact.info_title"></h3>
+          <div class="info-row" dir="ltr">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span dir="ltr">+964 773 890 19 14</span>
+          </div>
+          <div class="social-row" dir="ltr">
+            <a href="https://www.tiktok.com/@itsmart900?_r=1&_t=ZS-98Pz3RzR7Cv" target="_blank" rel="noopener" aria-label="TikTok"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+            <a href="https://wa.me/9647738901914" target="_blank" rel="noopener" aria-label="WhatsApp"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.6 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 1-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5.2.5.7 1.8.8 1.9.1.2.1.4 0 .6-.4.8-.8.8-.4 1.4.9 1.5 1.8 2 3.2 2.7.2.1.4.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.4.1.2.1.7-.1 1.3z"/></svg></a>
+            <a href="https://www.instagram.com/it_smart7?igsh=ZGN4d2VrZzJyeWt3&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+            <a href="https://facebook.com/share/1JXoMYftCz/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg></a>
+          </div>
+        </div>
+
+        <form id="contact-form">
+          <div class="form-row">
+            <div class="field"><label data-i18n="contact.name"></label><input type="text" name="name" required></div>
+            <div class="field"><label data-i18n="contact.email"></label><input type="email" name="email" required></div>
+          </div>
+          <div class="form-row">
+            <div class="field full"><label data-i18n="contact.message"></label><textarea rows="5" name="message" required></textarea></div>
+          </div>
+          <div class="submit-row">
+            <button type="submit" class="btn btn-primary" data-i18n="contact.submit"></button>
+            <span class="toast" id="form-toast">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <span data-i18n="contact.sent"></span>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-row">
+    <p data-i18n="footer.copy"></p>
+  </div>
+</footer>
+
+<a href="https://wa.me/9647738901914" target="_blank" rel="noopener" class="wa-float" aria-label="WhatsApp">
+  <svg width="36" height="36" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.868-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 22c-1.845 0-3.649-.494-5.223-1.427l-.375-.223-3.887 1.019 1.037-3.788-.244-.389A9.936 9.936 0 0 1 2.05 12C2.05 6.486 6.535 2 12.05 2c2.658 0 5.156 1.037 7.036 2.918A9.936 9.936 0 0 1 22 12c0 5.514-4.486 10-9.95 10z"/></svg>
+</a>
+
+<script>
+/* ===================== HERO BG VIDEO FALLBACK ===================== */
+/* Many mobile browsers (Data Saver / Lite mode, low-power mode, weak or metered
+   connections) silently refuse to autoplay background video, leaving nothing
+   visible behind the hero text. .hero-bg-fallback (a CSS gradient) always sits
+   underneath the video, and here we hide the <video> element entirely if it
+   fails to start or errors out, so mobile users only ever see the gradient
+   instead of a blank box. */
+(function(){
+  var heroSection = document.querySelector('.hero');
+  var heroVideo = document.querySelector('.hero-bg-video');
+  if(!heroSection || !heroVideo) return;
+  function showFallback(){ heroSection.classList.add('video-unavailable'); }
+  var playPromise = heroVideo.play();
+  if(playPromise && typeof playPromise.catch === 'function'){
+    playPromise.catch(showFallback);
+  }
+  heroVideo.addEventListener('error', showFallback);
+  heroVideo.addEventListener('stalled', function(){
+    // give a slow connection a little time before giving up
+    setTimeout(function(){ if(heroVideo.readyState < 2) showFallback(); }, 4000);
+  });
+})();
+
+/* ===================== TRANSLATIONS ===================== */
+const I18N = {
+ku: {
+  nav:{home:"سەرەکی", products:"ئامێرەکان", compare:"بەراورد", contact:"پەیوەندی"},
+  hero:{
+    eyebrow:"ئینتەرنێتی ستارلینک",
+    title:'پەیوەندیی ئینتەرنێتی ئاسمان بهێنە بۆ سەر <span class="accent">زەوی خۆت</span>',
+    subtitle:"Starlink Kurd ئینتەرنێتێکی خێرا و متمانەپێکراوت پێشکەش دەکات لە ڕێگەی مانگە دەسکردەکانەوە — لە ئۆفیسی شار تا بەرزترین کەمپی چیا.",
+    cta1:"ئامێرەکان ببینە", cta2:"پەیوەندیمان پێوە بکە",
+    stat1:"جۆری ئامێر", stat2:"مێگابایت/چرکە", stat3:"کێشی کەمترین ئامێر",
+    float1:"کاتی کارکردن", float2:"دوواکەوتنی وەڵام"
+  },
+  trust:{eyebrow:"بۆچی ئێمە", title:"بۆچی Starlink Kurd هەڵبژێریت",
+    i1:{h:"خێرایی ڕاستەقینە", p:"خێرایی گەیشتووە بۆ 400+ مێگابایت/چرکە، بەبێ کێشەی کێبڵ"},
+    i2:{h:"چیا و ناوچە دوورەکان", p:"تەنانەت لە دوورترین ناوچەکانی کوردستانیش کاردەکات"},
+    i3:{h:"دامەزراندنی ئاسان", p:"لە کەمتر لە 15 خولەکدا ئامادەیە، بەبێ پێویستی تەکنیکی"}
+  },
+  products:{eyebrow:"دوو ئامێر، یەک ئامانج", title:"ئامێرەکەت هەڵبژێرە", bestfor_label:"باشترین بەکارهێنان"},
+  usage:{eyebrow:"بەکارهێنانی جۆراوجۆر", title:"بۆ هەموو شێوازێکی ژیان", subtitle:"لە ژووری دانیشتنەوە هەتا لووتکەی چیا، Starlink لەگەڵتدا دەگوازرێتەوە.", c1:"بۆ ماڵ و ئۆفیس", c2:"بۆ گەشت و سەفەر", c3:"بازرگانیی بچووک", c4:"کەمپینگ", c5:"بەکارهێنانی هەمیشەیی", c6:"کارکردن لە شوێنە دوورەکان"},
+  compare:{eyebrow:"بەراورد", title:"Starlink Mini بەرامبەر Standard V4", h0:"تایبەتمەندی",
+    rows:[
+      ["قەبارە","بچووک","گەورەتر"],
+      ["کێش","1.1 کگ","2.9 کگ"],
+      ["ڕاوتەر","ناوخۆیی","دەرەکی (Wi-Fi 6)"],
+      ["بەکارهێنانی وزە","25–40 وات","75–100 وات"],
+      ["گواستنەوە","زۆر ئاسان","مامناوەند"],
+      ["باشترین بەکارهێنان","گەشت و کەمپینگ","ماڵ و ئۆفیس"],
+      ["کارایی","باش","بەرزتر و جێگیرتر"]
+    ]
+  },
+  common:{eyebrow:"تایبەتمەندیی هاوبەش", title:"ئەوەی هەردووکیان هاوبەشیان تێدایە",
+    items:[
+      "هەردووکیان پەیوەندی بە تۆڕی ئاسمانی Starlink دەکەن",
+      "هەردووکیان پێویستیان بە دیدی ئاسمانی کراوەیە",
+      "هەردووکیان بە شێوەی خۆکار باشترین سیگناڵ دەدۆزنەوە"
+    ]
+  },
+  speed:{eyebrow:"خێرایی", title:"خێرایی ئینتەرنێت",
+    mini:"لە زۆربەی شوێنەکاندا خێرایی تا 300+ مێگابایت/چرکە پێشکەش دەکات",
+    standard:"لە بارودۆخی گونجاودا دەگاتە 400+ مێگابایت/چرکە"
+  },
+  contact:{eyebrow:"پەیوەندی", title:"پەیوەندیمان پێوە بکە", subtitle:"پرسیارت هەیە دەربارەی ئامێری ستارلینک؟ پەیوەندیمان پێوە بکە.",
+    info_title:"زانیاریی پەیوەندی",
+    name:"ناو", email:"ئیمەیل", message:"پەیام", submit:"پەیام بنێرە", sent:"پەیامەکەت نێردرا!"
+  },
+  footer:{copy:"© 2026 Starlink Kurd. هەموو مافێک پارێزراوە."},
+  marquee:["خێرایی تا 400+ Mbps","دامەزراندن لە 15 خولەکدا","پشتگیری 24/7","پەیوەندیی مانگە دەسکردەکان","گەیاندن بۆ هەموو شارەکان","خێراترین ئینتەرنێت","لە هەموو شوێنێک کار دەکات"]
+},
+en: {
+  nav:{home:"Home", products:"Devices", compare:"Compare", contact:"Contact"},
+  hero:{
+    eyebrow:"Starlink Internet",
+    title:'Bring the sky\u2019s internet connection down to <span class="accent">your ground</span>',
+    subtitle:"Starlink Kurd delivers fast, reliable satellite internet — from city offices to the highest mountain camps.",
+    cta1:"Explore Devices", cta2:"Contact Us",
+    stat1:"Device types", stat2:"Mbps peak", stat3:"Lightest device",
+    float1:"Uptime", float2:"Latency"
+  },
+  trust:{eyebrow:"Why Us", title:"Why Choose Starlink Kurd",
+    i1:{h:"Real Speed", p:"Reaching 400+ Mbps with no cable hassle"},
+    i2:{h:"Mountains & Remote Areas", p:"Works even in Kurdistan's most remote regions"},
+    i3:{h:"Easy Setup", p:"Up and running in under 15 minutes, no technician needed"}
+  },
+  products:{eyebrow:"Two devices, one mission", title:"Choose Your Device", bestfor_label:"Best For"},
+  usage:{eyebrow:"Built for every lifestyle", title:"Wherever life takes you", subtitle:"From the living room to the mountaintop, Starlink moves with you.", c1:"Home & office", c2:"Travel & road trips", c3:"Small business", c4:"Camping", c5:"Always-on use", c6:"Remote work"},
+  compare:{eyebrow:"Comparison", title:"Starlink Mini vs Standard V4", h0:"Feature",
+    rows:[
+      ["Size","Compact","Larger"],
+      ["Weight","1.1 kg","2.9 kg"],
+      ["Router","Built-in","External (Wi-Fi 6)"],
+      ["Power use","25–40 W","75–100 W"],
+      ["Portability","Very easy","Moderate"],
+      ["Best for","Travel & camping","Home & office"],
+      ["Performance","Good","Higher & more stable"]
+    ]
+  },
+  common:{eyebrow:"Shared features", title:"What They Have In Common",
+    items:[
+      "Both connect to Starlink's satellite network",
+      "Both need a clear, unobstructed view of the sky",
+      "Both automatically find the strongest signal"
+    ]
+  },
+  speed:{eyebrow:"Speed", title:"Internet Speed",
+    mini:"Delivers 300+ Mbps in most locations",
+    standard:"Reaches 400+ Mbps under ideal conditions"
+  },
+  contact:{eyebrow:"Contact", title:"Get In Touch", subtitle:"Have a question about coverage, pricing, or installation? Reach out to us.",
+    info_title:"Contact Information",
+    name:"Name", email:"Email", message:"Message", submit:"Send Message", sent:"Your message has been sent!"
+  },
+  footer:{copy:"© 2026 Starlink Kurd. All rights reserved."},
+  marquee:["Speeds up to 400+ Mbps","Setup in 15 minutes","24/7 support","Satellite-powered connection","Delivery to every city","The fastest internet","Works everywhere"]
+},
+ar: {
+  nav:{home:"الرئيسية", products:"الأجهزة", compare:"المقارنة", contact:"تواصل معنا"},
+  hero:{
+    eyebrow:"إنترنت ستارلينك",
+    title:'اجلب اتصال إنترنت السماء إلى <span class="accent">أرضك</span>',
+    subtitle:"يقدّم لك Starlink Kurd إنترنت أقمار صناعية سريعًا وموثوقًا — من مكاتب المدينة إلى أعلى مخيمات الجبال.",
+    cta1:"استكشف الأجهزة", cta2:"تواصل معنا",
+    stat1:"نوع جهاز", stat2:"ميغابت بالثانية", stat3:"وزن أخف جهاز",
+    float1:"وقت التشغيل", float2:"زمن الاستجابة"
+  },
+  trust:{eyebrow:"لماذا نحن", title:"لماذا تختار ستارلينك كورد",
+    i1:{h:"سرعة حقيقية", p:"تصل إلى أكثر من 400 ميغابت بدون متاعب الكابلات"},
+    i2:{h:"الجبال والمناطق النائية", p:"يعمل حتى في أبعد مناطق كردستان"},
+    i3:{h:"تركيب سهل", p:"جاهز للعمل خلال أقل من 15 دقيقة دون الحاجة لفني"}
+  },
+  products:{eyebrow:"جهازان، مهمة واحدة", title:"اختر جهازك", bestfor_label:"الأفضل لـ"},
+  usage:{eyebrow:"مصمم لكل نمط حياة", title:"أينما تأخذك الحياة", subtitle:"من غرفة الجلوس إلى قمة الجبل، ستارلينك يرافقك.", c1:"المنزل والمكتب", c2:"السفر والرحلات", c3:"الأعمال الصغيرة", c4:"التخييم", c5:"الاستخدام الدائم", c6:"العمل عن بُعد"},
+  compare:{eyebrow:"مقارنة", title:"ستارلينك ميني مقابل ستاندرد V4", h0:"الميزة",
+    rows:[
+      ["الحجم","صغير","أكبر"],
+      ["الوزن","1.1 كغم","2.9 كغم"],
+      ["الراوتر","مدمج","خارجي (Wi-Fi 6)"],
+      ["استهلاك الطاقة","25–40 واط","75–100 واط"],
+      ["سهولة الحمل","سهلة جدًا","متوسطة"],
+      ["الأفضل لـ","السفر والتخييم","المنزل والمكتب"],
+      ["الأداء","جيد","أعلى وأكثر ثباتًا"]
+    ]
+  },
+  common:{eyebrow:"مزايا مشتركة", title:"ما يشتركان فيه",
+    items:[
+      "كلاهما يتصل بشبكة ستارلينك الفضائية",
+      "كلاهما يحتاج رؤية صافية وغير محجوبة للسماء",
+      "كلاهما يجد تلقائيًا أقوى إشارة"
+    ]
+  },
+  speed:{eyebrow:"السرعة", title:"سرعة الإنترنت",
+    mini:"يقدم أكثر من 300 ميغابت في الثانية في معظم المواقع",
+    standard:"يصل إلى أكثر من 400 ميغابت في الثانية في الظروف المثالية"
+  },
+  contact:{eyebrow:"تواصل معنا", title:"تواصل معنا", subtitle:"لديك سؤال حول التغطية أو الأسعار أو التركيب؟ راسلنا.",
+    info_title:"معلومات التواصل",
+    name:"الاسم", email:"البريد الإلكتروني", message:"الرسالة", submit:"إرسال الرسالة", sent:"تم إرسال رسالتك!"
+  },
+  footer:{copy:"© 2026 ستارلينك كورد. جميع الحقوق محفوظة."},
+  marquee:["سرعات تصل إلى 400+ ميغابت","التركيب خلال 15 دقيقة","دعم على مدار الساعة","اتصال عبر الأقمار الصناعية","التوصيل إلى جميع المدن","أسرع إنترنت","يعمل في كل مكان"]
+}
+};
+
+const PRODUCTS = {
+ku:{
+  mini:{badge:"بۆ گەشت", features:[
+      "ڕاوتەری Wi-Fi لە ناو خۆیدا — پێویست بە ڕاوتەری جیاواز نییە",
+      "بەکارهێنانی وزەی کەم، تەنها 25–40 وات",
+      "پشتگیری IP67 بۆ پاراستن لە ئاو و تۆز",
+      "دەتوانرێت بە پاوەربانک یان سەرچاوەی 12–48V کار بکات",
+      "گونجاوە بۆ گەشت، RV، کەمپینگ، کەشتی و شوێنە دوورەکان"
+    ], bestfor:["گەشت و سەفەر","کەمپینگ","کارکردن لە شوێنە دوورەکان","پەیوەندیی ئینتەرنێت لە کاتی گەڕان"]},
+  standard:{badge:"بۆ ماڵ و ئۆفیس", features:[
+      "ئەنتێنی گەورەتر بۆ وەرگرتنی باشتر",
+      "ڕاوتەری Wi-Fi 6 بە جیا هاتووە",
+      "بەکارهێنانی وزەی نزیکەی 75–100 وات",
+      "پشتگیری IP67 بۆ ئەنتێن و IP56 بۆ ڕاوتەر",
+      "دوو پۆرتی Ethernet",
+      "توانای پەیوەستکردنی تا 235 ئامێر"
+    ], bestfor:["ماڵ","ئۆفیس","بازرگانیی بچووک","بەکارهێنانی هەمیشەیی"]}
+},
+en:{
+  mini:{badge:"For travel", features:[
+      "Compact size, weighs about 1.1 kg",
+      "Built-in Wi-Fi router — no separate router needed",
+      "Low power use, averaging 25–40 watts",
+      "IP67-rated protection against water and dust",
+      "Can run on a power bank or a 12–48V power source",
+      "Ideal for travel, RVs, camping, boats, and remote areas"
+    ], bestfor:["Travel & road trips","Camping","Remote work","On-the-go connection"]},
+  standard:{badge:"For home & office", features:[
+      "Larger antenna for better reception",
+      "Separate Wi-Fi 6 router included",
+      "Power use around 75–100 watts",
+      "IP67-rated antenna, IP56-rated router",
+      "Two Ethernet ports",
+      "Connects up to 235 devices"
+    ], bestfor:["Home","Office","Small business","Always-on use"]}
+},
+ar:{
+  mini:{badge:"للسفر", features:[
+      "حجم صغير ووزن يقارب 1.1 كغم",
+      "راوتر واي فاي مدمج — لا حاجة لراوتر منفصل",
+      "استهلاك طاقة منخفض بمعدل 25–40 واط",
+      "مقاوم للماء والغبار بمعيار IP67",
+      "يعمل ببطارية محمولة أو مصدر طاقة 12–48 فولت",
+      "مثالي للسفر والكرفانات والتخييم والقوارب والمناطق النائية"
+    ], bestfor:["السفر والرحلات","التخييم","العمل عن بُعد","الاتصال أثناء التنقل"]},
+  standard:{badge:"للمنزل والمكتب", features:[
+      "هوائي أكبر لاستقبال أفضل",
+      "راوتر واي فاي 6 منفصل مرفق",
+      "استهلاك طاقة يقارب 75–100 واط",
+      "الهوائي بمعيار IP67 والراوتر بمعيار IP56",
+      "منفذا إيثرنت",
+      "يدعم الاتصال حتى 235 جهازًا"
+    ], bestfor:["المنزل","المكتب","الأعمال الصغيرة","الاستخدام الدائم"]}
+}
+};
+
+const checkSVG = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>`;
+
+function renderList(id, items){
+  const el = document.getElementById(id);
+  el.innerHTML = items.map(t => `<li>${checkSVG}<span>${t}</span></li>`).join('');
+}
+function renderChips(id, items){
+  const el = document.getElementById(id);
+  el.innerHTML = items.map(t => `<span class="chip">${t}</span>`).join('');
+}
+function renderCompare(rows){
+  const el = document.getElementById('compare-body');
+  el.innerHTML = rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+}
+function renderCommon(items){
+  const el = document.getElementById('common-grid');
+  el.innerHTML = items.map((t,i) => `<div class="common-card"><div class="num mono">0${i+1}</div><p>${t}</p></div>`).join('');
+}
+function renderMarquee(items){
+  const el = document.getElementById('marquee-track');
+  const chunk = items.map(t => `<span class="marquee-item"><span class="sep"></span>${t}</span>`).join('');
+  el.innerHTML = chunk + chunk; // duplicated for seamless loop
+}
+
+function applyLang(lang){
+  const dict = I18N[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = (lang === 'en') ? 'ltr' : 'rtl';
+  document.body.className = 'lang-' + lang;
+
+  document.querySelectorAll('[data-i18n]').forEach(node => {
+    const path = node.getAttribute('data-i18n').split('.');
+    let val = dict;
+    for(const p of path){ val = val && val[p]; }
+    if(val !== undefined) node.innerHTML = val;
+  });
+
+  renderList('mini-features', PRODUCTS[lang].mini.features);
+  renderList('standard-features', PRODUCTS[lang].standard.features);
+  renderChips('mini-bestfor', PRODUCTS[lang].mini.bestfor);
+  renderChips('standard-bestfor', PRODUCTS[lang].standard.bestfor);
+  document.querySelector('#products-mini-badge');
+  document.querySelectorAll('.product-card.mini .badge')[0].textContent = PRODUCTS[lang].mini.badge;
+  document.querySelectorAll('.product-card.standard .badge')[0].textContent = PRODUCTS[lang].standard.badge;
+  renderCompare(dict.compare.rows);
+  renderCommon(dict.common.items);
+  renderMarquee(dict.marquee);
+
+  document.querySelectorAll('.langsw button').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  try{ localStorage.setItem('sk_lang', lang); }catch(e){}
+}
+
+document.querySelectorAll('.langsw button').forEach(btn=>{
+  btn.addEventListener('click', ()=> applyLang(btn.dataset.lang));
+});
+
+let initialLang = 'ku';
+try{ initialLang = localStorage.getItem('sk_lang') || 'ku'; }catch(e){}
+applyLang(initialLang);
+
+/* animated hero stat counters */
+const counterIO = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('[data-count]').forEach(el=>{
+        const target = parseFloat(el.dataset.count);
+        const suffix = el.dataset.suffix || '';
+        const decimals = el.dataset.decimal ? parseInt(el.dataset.decimal) : 0;
+        const start = performance.now();
+        const dur = 1300;
+        function frame(now){
+          const t = Math.min(1, (now - start) / dur);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = (eased * target).toFixed(decimals) + suffix;
+          if(t < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      });
+      counterIO.disconnect();
+    }
+  });
+},{threshold:.6});
+const heroStatsEl = document.querySelector('.hero-stats');
+if(heroStatsEl) counterIO.observe(heroStatsEl);
+
+/* subtle 3D tilt on product / trust cards */
+function attachTilt(selector, strength){
+  document.querySelectorAll(selector).forEach(card=>{
+    card.style.transformStyle = 'preserve-3d';
+    card.addEventListener('mousemove', (e)=>{
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(900px) rotateY(${px*strength}deg) rotateX(${-py*strength}deg) translateY(-6px)`;
+    });
+    card.addEventListener('mouseleave', ()=>{
+      card.style.transform = '';
+    });
+  });
+}
+attachTilt('.product-card', 5);
+attachTilt('.trust-card', 4);
+
+/* magnetic pull on primary buttons */
+document.querySelectorAll('.btn').forEach(btn=>{
+  btn.addEventListener('mousemove', (e)=>{
+    const r = btn.getBoundingClientRect();
+    const mx = (e.clientX - r.left - r.width/2) * 0.25;
+    const my = (e.clientY - r.top - r.height/2) * 0.35;
+    btn.style.transform = `translate(${mx}px, ${my - 3}px)`;
+  });
+  btn.addEventListener('mouseleave', ()=>{ btn.style.transform = ''; });
+});
+
+/* scrollspy: highlight active nav link */
+const sectionIds = ['home','trust','products','compare','common','speed','contact'];
+const navMap = {home:'home', products:'products', compare:'compare', contact:'contact'};
+const spyIO = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id = e.target.id;
+      const navId = id === 'trust' ? 'home' : (id === 'common' || id === 'speed' ? 'compare' : id);
+      document.querySelectorAll('.nav-links a').forEach(a=>{
+        a.style.color = '';
+        const href = a.getAttribute('href').replace('#','');
+        if(href === navId){ a.style.color = 'var(--cyan)'; }
+      });
+    }
+  });
+},{threshold:.5, rootMargin:'-40% 0px -40% 0px'});
+sectionIds.forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) spyIO.observe(el);
+});
+
+/* animate circular gauges when scrolled into view */
+function animateGauge(el, target, duration){
+  const start = performance.now();
+  function frame(now){
+    const t = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.style.setProperty('--pct', (eased * target).toFixed(1));
+    if(t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+const speedSection = document.getElementById('speed');
+const gaugeIO = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      animateGauge(document.getElementById('gauge-mini'), 62, 1400);
+      animateGauge(document.getElementById('gauge-standard'), 84, 1400);
+      gaugeIO.disconnect();
+    }
+  });
+},{threshold:.35});
+gaugeIO.observe(speedSection);
+
+/* scroll reveal for sections / grids */
+const revealIO = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      revealIO.unobserve(e.target);
+    }
+  });
+},{threshold:.15});
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => revealIO.observe(el));
+
+/* header shrink on scroll */
+const headerEl = document.querySelector('header');
+window.addEventListener('scroll', ()=>{
+  headerEl.classList.toggle('scrolled', window.scrollY > 30);
+}, {passive:true});
+
+/* twinkling starfield canvas */
+(function(){
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = document.documentElement.scrollHeight;
+  }
+  function makeStars(){
+    const count = Math.floor((canvas.width * Math.min(canvas.height, 2400)) / 9000);
+    stars = Array.from({length: count}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * Math.min(canvas.height, 2400),
+      r: Math.random() * 1.3 + 0.3,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.4 + Math.random() * 0.8
+    }));
+  }
+  resize(); makeStars();
+  window.addEventListener('resize', ()=>{ resize(); makeStars(); });
+  let t = 0;
+  function draw(){
+    t += 0.016;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(const s of stars){
+      const tw = (0.35 + 0.35 * Math.sin(t * s.speed + s.phase)) * 0.75;
+      ctx.globalAlpha = tw;
+      ctx.fillStyle = '#7d9aa3';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* contact form */
+/* Sends the message to itsmart7282@gmail.com using FormSubmit.co — a free
+   form-relay service, so no custom backend is needed for this static site.
+   IMPORTANT: the first message sent will trigger a one-time confirmation
+   email from FormSubmit to itsmart7282@gmail.com; that confirmation link
+   must be clicked once before further submissions will actually arrive. */
+document.getElementById('contact-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const form = this;
+  const toast = document.getElementById('form-toast');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const formData = new FormData(form);
+  formData.append('_subject', 'New message from Starlink Kurd website');
+  formData.append('_template', 'table');
+  formData.append('_captcha', 'false');
+
+  submitBtn.disabled = true;
+  fetch('https://formsubmit.co/ajax/itsmart7282@gmail.com', {
+    method: 'POST',
+    headers: { 'Accept': 'application/json' },
+    body: formData
+  })
+  .then(res => res.ok ? res.json() : Promise.reject(res))
+  .then(() => {
+    toast.classList.add('show');
+    form.reset();
+    setTimeout(()=> toast.classList.remove('show'), 4000);
+  })
+  .catch(() => {
+    alert('Something went wrong sending your message. Please try again or contact us directly.');
+  })
+  .finally(() => { submitBtn.disabled = false; });
+});
+
+/* ===================== LIVE PRICING ===================== */
+/* Point this at wherever the pricing API (see starlink-admin/) is deployed.
+   Example when deployed: 'https://api.yourdomain.com' */
+const PRICE_API_BASE = 'http://localhost:3000';
+
+const currencySymbol = { USD:'$', EUR:'€', IQD:'IQD' };
+
+function renderPrice(container, product){
+  const sym = currencySymbol[product.currency] || product.currency + ' ';
+  container.innerHTML = '';
+  const finalEl = document.createElement('span');
+  finalEl.className = 'price-final';
+  finalEl.textContent = `${sym}${product.final_price}`;
+  container.appendChild(finalEl);
+  if(product.on_sale){
+    const origEl = document.createElement('span');
+    origEl.className = 'price-original';
+    origEl.textContent = `${sym}${product.price}`;
+    container.appendChild(origEl);
+    const badge = document.createElement('span');
+    badge.className = 'discount-badge';
+    badge.textContent = `%${product.discount_percent}-`;
+    container.appendChild(badge);
+  }
+}
+
+async function loadLivePrices(){
+  const boxes = document.querySelectorAll('.price-box[data-slug]');
+  if(!boxes.length) return;
+  boxes.forEach(b => b.innerHTML = '<span class="price-loading">... نرخ باردەکرێت</span>');
+  try{
+    const res = await fetch(`${PRICE_API_BASE}/api/products`);
+    if(!res.ok) throw new Error('bad response');
+    const products = await res.json();
+    boxes.forEach(box=>{
+      const p = products.find(pr => pr.slug === box.dataset.slug);
+      if(p) renderPrice(box, p);
+      else box.innerHTML = '';
+    });
+  }catch(err){
+    // API not reachable (e.g. not deployed yet) — hide the price box quietly
+    boxes.forEach(b => b.innerHTML = '');
+  }
+}
+loadLivePrices();
+
+/* mobile burger -> reveal nav links inline */
+document.querySelector('.burger').addEventListener('click', ()=>{
+  const nav = document.querySelector('.nav-links');
+  const open = nav.style.display === 'flex';
+  nav.style.cssText = open ? '' : 'display:flex;position:absolute;top:76px;inset-inline:0;background:#f6f6f3ee;flex-direction:column;padding:16px 28px;border-bottom:1px solid #aeb0a4;';
+});
+</script>
+</body>
+</html>
