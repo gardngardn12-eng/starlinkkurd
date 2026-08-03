@@ -229,17 +229,17 @@ html[dir="rtl"] .section-head h2{font-family:var(--ff-rtl);font-weight:800;lette
   transition:transform .45s var(--ease), border-color .45s, box-shadow .45s;
 }
 .product-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
-.product-card.mini{border-color:#0f7fae33;}
-.product-card.standard{border-color:#c06e1f33;}
-.product-card.mini:hover{border-color:#0f7fae88;}
-.product-card.standard:hover{border-color:#c06e1f88;}
+.product-card.mini, .product-card.acc-cyan{border-color:#0f7fae33;}
+.product-card.standard, .product-card.acc-amber{border-color:#c06e1f33;}
+.product-card.mini:hover, .product-card.acc-cyan:hover{border-color:#0f7fae88;}
+.product-card.standard:hover, .product-card.acc-amber:hover{border-color:#c06e1f88;}
 .product-card::before{
   content:'';position:absolute;top:-60px;inset-inline-end:-60px;width:220px;height:220px;border-radius:50%;
   filter:blur(64px);opacity:.32;transition:opacity .45s;
 }
 .product-card:hover::before{opacity:.5;}
-.product-card.mini::before{background:var(--cyan);}
-.product-card.standard::before{background:var(--amber);}
+.product-card.mini::before, .product-card.acc-cyan::before{background:var(--cyan);}
+.product-card.standard::before, .product-card.acc-amber::before{background:var(--amber);}
 .product-visual{
   position:relative;z-index:1;height:150px;margin-bottom:24px;border-radius:14px;
   background:radial-gradient(ellipse at center, #12172c06 0%, transparent 70%);
@@ -252,21 +252,21 @@ html[dir="rtl"] .section-head h2{font-family:var(--ff-rtl);font-weight:800;lette
 .product-visual img{width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:12px;}
 .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;position:relative;z-index:1;}
 .card-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);}
-.product-card.mini .card-icon{background:var(--cyan-soft);}
-.product-card.standard .card-icon{background:var(--amber-soft);}
+.product-card.mini .card-icon, .product-card.acc-cyan .card-icon{background:var(--cyan-soft);}
+.product-card.standard .card-icon, .product-card.acc-amber .card-icon{background:var(--amber-soft);}
 .badge{font-family:var(--ff-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:999px;border:1px solid var(--border);color:var(--text-faint);}
 .product-card .badge{display:none;}
 html[dir="rtl"] .badge{font-family:var(--ff-rtl);font-size:.78rem;letter-spacing:0;text-transform:none;}
 .product-card h3{font-family:var(--ff-display);font-size:1.55rem;font-weight:700;margin-bottom:6px;position:relative;z-index:1;}
 html[dir="rtl"] .product-card h3{font-family:var(--ff-rtl);font-weight:800;}
 .product-card .tagline{font-size:.92rem;color:var(--cyan);margin-bottom:16px;font-weight:600;position:relative;z-index:1;}
-.product-card.standard .tagline{color:var(--amber);}
+.product-card.standard .tagline, .product-card.acc-amber .tagline{color:var(--amber);}
 .product-card .desc{color:var(--text-dim);font-size:.94rem;margin-bottom:24px;position:relative;z-index:1;}
 .feat-list{display:grid;gap:11px;margin-bottom:26px;position:relative;z-index:1;}
 .feat-list li{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--text);}
 .feat-list li svg{flex-shrink:0;margin-top:3px;}
-.product-card.mini .feat-list li svg{color:var(--cyan);}
-.product-card.standard .feat-list li svg{color:var(--amber);}
+.product-card.mini .feat-list li svg, .product-card.acc-cyan .feat-list li svg{color:var(--cyan);}
+.product-card.standard .feat-list li svg, .product-card.acc-amber .feat-list li svg{color:var(--amber);}
 .price-box{display:flex;align-items:baseline;gap:10px;margin-bottom:20px;position:relative;z-index:1;min-height:1.6rem;}
 .price-box .price-loading{font-size:.82rem;color:var(--text-faint);font-family:var(--ff-mono);}
 .price-box .price-final{font-family:var(--ff-display);font-weight:700;font-size:1.5rem;color:var(--text);}
@@ -565,20 +565,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
         <div class="eyebrow" style="justify-content:center;"><span class="pulse"></span><span data-i18n="trust.eyebrow"></span></div>
         <h2 data-i18n="trust.title"></h2>
       </div>
-      <div class="trust-grid reveal-stagger" id="trust-grid">
-        <div class="trust-card">
-          <div class="ticon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></div>
-          <h4 data-i18n="trust.i1.h"></h4><p data-i18n="trust.i1.p"></p>
-        </div>
-        <div class="trust-card">
-          <div class="ticon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20 9 8l4 6 3-5 5 11z"/></svg></div>
-          <h4 data-i18n="trust.i2.h"></h4><p data-i18n="trust.i2.p"></p>
-        </div>
-        <div class="trust-card">
-          <div class="ticon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
-          <h4 data-i18n="trust.i3.h"></h4><p data-i18n="trust.i3.p"></p>
-        </div>
-      </div>
+      <div class="trust-grid reveal-stagger" id="trust-grid"></div>
     </div>
   </section>
 
@@ -587,45 +574,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
        named exactly: images/gallery-1.jpg ... images/gallery-6.jpg -->
   <div class="usage-wrap">
     <div class="usage-stage">
-      <div class="usage-track" id="usage-track">
-        <div class="usage-card acc-cyan">
-          <img src="images/gallery-1.jpg" alt="Starlink - home &amp; office" loading="lazy">
-        </div>
-        <div class="usage-card acc-amber">
-          <img src="images/gallery-2.jpg" alt="Starlink - travel &amp; road trips" loading="lazy">
-        </div>
-        <div class="usage-card acc-cyan">
-          <img src="images/gallery-3.jpg" alt="Starlink - small business" loading="lazy">
-        </div>
-        <div class="usage-card acc-amber">
-          <img src="images/gallery-4.jpg" alt="Starlink - camping" loading="lazy">
-        </div>
-        <div class="usage-card acc-cyan">
-          <img src="images/gallery-5.jpg" alt="Starlink - always-on use" loading="lazy">
-        </div>
-        <div class="usage-card acc-amber">
-          <img src="images/gallery-6.jpg" alt="Starlink - remote work" loading="lazy">
-        </div>
-        <!-- duplicated set for a seamless infinite loop -->
-        <div class="usage-card acc-cyan" aria-hidden="true">
-          <img src="images/gallery-1.jpg" alt="" loading="lazy">
-        </div>
-        <div class="usage-card acc-amber" aria-hidden="true">
-          <img src="images/gallery-2.jpg" alt="" loading="lazy">
-        </div>
-        <div class="usage-card acc-cyan" aria-hidden="true">
-          <img src="images/gallery-3.jpg" alt="" loading="lazy">
-        </div>
-        <div class="usage-card acc-amber" aria-hidden="true">
-          <img src="images/gallery-4.jpg" alt="" loading="lazy">
-        </div>
-        <div class="usage-card acc-cyan" aria-hidden="true">
-          <img src="images/gallery-5.jpg" alt="" loading="lazy">
-        </div>
-        <div class="usage-card acc-amber" aria-hidden="true">
-          <img src="images/gallery-6.jpg" alt="" loading="lazy">
-        </div>
-      </div>
+      <div class="usage-track" id="usage-track"></div>
     </div>
   </div>
 
@@ -637,45 +586,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
         <h2 data-i18n="products.title"></h2>
       </div>
 
-      <div class="products-grid reveal-stagger">
-        <!-- MINI -->
-        <div class="product-card mini">
-          <div class="product-visual">
-            <img src="starlink-mini.jpg" alt="Starlink Mini">
-          </div>
-          <div class="card-top">
-            <span class="badge" data-i18n="products.mini.badge"></span>
-          </div>
-          <h3>Starlink Mini</h3>
-          <div class="tagline" data-i18n="products.mini.tagline"></div>
-          <p class="desc" data-i18n="products.mini.desc"></p>
-          <div class="price-box" id="mini-price" data-slug="mini"></div>
-          <ul class="feat-list" id="mini-features"></ul>
-          <div class="bestfor">
-            <h4 data-i18n="products.bestfor_label"></h4>
-            <div class="chip-row" id="mini-bestfor"></div>
-          </div>
-        </div>
-
-        <!-- STANDARD -->
-        <div class="product-card standard">
-          <div class="product-visual">
-            <img src="starlink-standard.jpg" alt="Starlink Standard V4">
-          </div>
-          <div class="card-top">
-            <span class="badge" data-i18n="products.standard.badge"></span>
-          </div>
-          <h3>Starlink Standard V4</h3>
-          <div class="tagline" data-i18n="products.standard.tagline"></div>
-          <p class="desc" data-i18n="products.standard.desc"></p>
-          <div class="price-box" id="standard-price" data-slug="standard-v4"></div>
-          <ul class="feat-list" id="standard-features"></ul>
-          <div class="bestfor">
-            <h4 data-i18n="products.bestfor_label"></h4>
-            <div class="chip-row" id="standard-bestfor"></div>
-          </div>
-        </div>
-      </div>
+      <div class="products-grid reveal-stagger" id="products-grid"></div>
     </div>
   </section>
 
@@ -961,72 +872,98 @@ ar: {
 }
 };
 
-const PRODUCTS = {
-ku:{
-  mini:{badge:"بۆ گەشت", features:[
-      "ڕاوتەری Wi-Fi لە ناو خۆیدا — پێویست بە ڕاوتەری جیاواز نییە",
-      "بەکارهێنانی وزەی کەم، تەنها 25–40 وات",
-      "پشتگیری IP67 بۆ پاراستن لە ئاو و تۆز",
-      "دەتوانرێت بە پاوەربانک یان سەرچاوەی 12–48V کار بکات",
-      "گونجاوە بۆ گەشت، RV، کەمپینگ، کەشتی و شوێنە دوورەکان"
-    ], bestfor:["گەشت و سەفەر","کەمپینگ","کارکردن لە شوێنە دوورەکان","پەیوەندیی ئینتەرنێت لە کاتی گەڕان"]},
-  standard:{badge:"بۆ ماڵ و ئۆفیس", features:[
-      "ئەنتێنی گەورەتر بۆ وەرگرتنی باشتر",
-      "ڕاوتەری Wi-Fi 6 بە جیا هاتووە",
-      "بەکارهێنانی وزەی نزیکەی 75–100 وات",
-      "پشتگیری IP67 بۆ ئەنتێن و IP56 بۆ ڕاوتەر",
-      "دوو پۆرتی Ethernet",
-      "توانای پەیوەستکردنی تا 235 ئامێر"
-    ], bestfor:["ماڵ","ئۆفیس","بازرگانیی بچووک","بەکارهێنانی هەمیشەیی"]}
-},
-en:{
-  mini:{badge:"For travel", features:[
-      "Compact size, weighs about 1.1 kg",
-      "Built-in Wi-Fi router — no separate router needed",
-      "Low power use, averaging 25–40 watts",
-      "IP67-rated protection against water and dust",
-      "Can run on a power bank or a 12–48V power source",
-      "Ideal for travel, RVs, camping, boats, and remote areas"
-    ], bestfor:["Travel & road trips","Camping","Remote work","On-the-go connection"]},
-  standard:{badge:"For home & office", features:[
-      "Larger antenna for better reception",
-      "Separate Wi-Fi 6 router included",
-      "Power use around 75–100 watts",
-      "IP67-rated antenna, IP56-rated router",
-      "Two Ethernet ports",
-      "Connects up to 235 devices"
-    ], bestfor:["Home","Office","Small business","Always-on use"]}
-},
-ar:{
-  mini:{badge:"للسفر", features:[
-      "حجم صغير ووزن يقارب 1.1 كغم",
-      "راوتر واي فاي مدمج — لا حاجة لراوتر منفصل",
-      "استهلاك طاقة منخفض بمعدل 25–40 واط",
-      "مقاوم للماء والغبار بمعيار IP67",
-      "يعمل ببطارية محمولة أو مصدر طاقة 12–48 فولت",
-      "مثالي للسفر والكرفانات والتخييم والقوارب والمناطق النائية"
-    ], bestfor:["السفر والرحلات","التخييم","العمل عن بُعد","الاتصال أثناء التنقل"]},
-  standard:{badge:"للمنزل والمكتب", features:[
-      "هوائي أكبر لاستقبال أفضل",
-      "راوتر واي فاي 6 منفصل مرفق",
-      "استهلاك طاقة يقارب 75–100 واط",
-      "الهوائي بمعيار IP67 والراوتر بمعيار IP56",
-      "منفذا إيثرنت",
-      "يدعم الاتصال حتى 235 جهازًا"
-    ], bestfor:["المنزل","المكتب","الأعمال الصغيرة","الاستخدام الدائم"]}
-}
+/* ===================== DYNAMIC CMS CONTENT ===================== */
+/* Trust boxes, gallery photos and device cards are managed from
+   /admin.html and stored in Neon — fetched here and rendered client-side
+   so the page always reflects the latest content without a redeploy. */
+const SITE_API = window.location.origin;
+const currencySymbol = { USD:'$', EUR:'€', IQD:'IQD' };
+
+const ICON_PATHS = {
+  'bolt':'M13 2 3 14h7l-1 8 10-12h-7z',
+  'mountain':'M3 20 9 8l4 6 3-5 5 11z',
+  'shield-check':'M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6z|M9 12l2 2 4-4',
+  'wifi':'M2 8.5a16 16 0 0 1 20 0|M5 12a11 11 0 0 1 14 0|M8.5 15.5a6 6 0 0 1 7 0|M12 19h.01',
+  'globe':'M12 2a10 10 0 1 0 .0001 0z|M2 12h20|M12 2c2.5 2.7 4 6.2 4 10s-1.5 7.3-4 10c-2.5-2.7-4-6.2-4-10s1.5-7.3 4-10z',
+  'clock':'M12 2a10 10 0 1 0 .0001 0z|M12 6v6l4 2'
 };
+function iconSvg(key){
+  const d = ICON_PATHS[key] || ICON_PATHS.bolt;
+  const paths = d.split('|').map(p => `<path d="${p}"/>`).join('');
+  return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${paths}</svg>`;
+}
+
+let TRUST_DATA = [], GALLERY_DATA = [], PRODUCTS_DATA = [];
+
+async function loadDynamicContent(){
+  try{
+    const [trustRes, galleryRes, productsRes] = await Promise.all([
+      fetch(`${SITE_API}/api/trust-features`),
+      fetch(`${SITE_API}/api/gallery`),
+      fetch(`${SITE_API}/api/products`)
+    ]);
+    TRUST_DATA = trustRes.ok ? await trustRes.json() : [];
+    GALLERY_DATA = galleryRes.ok ? await galleryRes.json() : [];
+    PRODUCTS_DATA = productsRes.ok ? await productsRes.json() : [];
+  }catch(err){
+    TRUST_DATA = []; GALLERY_DATA = []; PRODUCTS_DATA = [];
+  }
+  renderGallery();
+}
+
+function renderGallery(){
+  const track = document.getElementById('usage-track');
+  if(!track || !GALLERY_DATA.length) return;
+  const accents = ['acc-cyan','acc-amber'];
+  const build = (hidden) => GALLERY_DATA.map((g,i) => `
+    <div class="usage-card ${accents[i%2]}"${hidden ? ' aria-hidden="true"' : ''}>
+      <img src="${g.image}" alt="${hidden ? '' : (g.alt||'').replace(/"/g,'&quot;')}" loading="lazy">
+    </div>`).join('');
+  // the set is duplicated once so the CSS translateX(-50%) loop is seamless
+  track.innerHTML = build(false) + build(true);
+}
 
 const checkSVG = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>`;
 
-function renderList(id, items){
-  const el = document.getElementById(id);
-  el.innerHTML = items.map(t => `<li>${checkSVG}<span>${t}</span></li>`).join('');
+function renderTrust(lang){
+  const el = document.getElementById('trust-grid');
+  if(!el) return;
+  el.innerHTML = TRUST_DATA.map(t => `
+    <div class="trust-card">
+      <div class="ticon">${iconSvg(t.icon)}</div>
+      <h4>${t.title[lang] || t.title.ku || ''}</h4>
+      <p>${t.description[lang] || t.description.ku || ''}</p>
+    </div>`).join('');
 }
-function renderChips(id, items){
-  const el = document.getElementById(id);
-  el.innerHTML = items.map(t => `<span class="chip">${t}</span>`).join('');
+
+function renderProductsGrid(lang){
+  const el = document.getElementById('products-grid');
+  if(!el) return;
+  const accents = ['acc-cyan','acc-amber'];
+  el.innerHTML = PRODUCTS_DATA.map((p,i) => {
+    const sym = currencySymbol[p.currency] || (p.currency + ' ');
+    const priceHtml = p.on_sale
+      ? `<span class="price-final">${sym}${p.final_price}</span><span class="price-original">${sym}${p.price}</span><span class="discount-badge">%${p.discount_percent}-</span>`
+      : `<span class="price-final">${sym}${p.final_price}</span>`;
+    const features = (p.features||[]).map(f => `<li>${checkSVG}<span>${f[lang]||f.ku||''}</span></li>`).join('');
+    const bestfor = (p.bestfor||[]).map(f => `<span class="chip">${f[lang]||f.ku||''}</span>`).join('');
+    return `
+      <div class="product-card ${accents[i%2]}">
+        <div class="product-visual">${p.image ? `<img src="${p.image}" alt="${(p.name||'').replace(/"/g,'&quot;')}">` : ''}</div>
+        <div class="card-top"><span class="badge">${p.badge[lang]||p.badge.ku||''}</span></div>
+        <h3>${p.name}</h3>
+        <div class="tagline">${p.tagline[lang]||p.tagline.ku||''}</div>
+        <p class="desc">${p.description[lang]||p.description.ku||''}</p>
+        <div class="price-box">${priceHtml}</div>
+        <ul class="feat-list">${features}</ul>
+        <div class="bestfor">
+          <h4>${I18N[lang].products.bestfor_label}</h4>
+          <div class="chip-row">${bestfor}</div>
+        </div>
+      </div>`;
+  }).join('');
 }
+
 function renderCompare(rows){
   const el = document.getElementById('compare-body');
   el.innerHTML = rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
@@ -1054,13 +991,8 @@ function applyLang(lang){
     if(val !== undefined) node.innerHTML = val;
   });
 
-  renderList('mini-features', PRODUCTS[lang].mini.features);
-  renderList('standard-features', PRODUCTS[lang].standard.features);
-  renderChips('mini-bestfor', PRODUCTS[lang].mini.bestfor);
-  renderChips('standard-bestfor', PRODUCTS[lang].standard.bestfor);
-  document.querySelector('#products-mini-badge');
-  document.querySelectorAll('.product-card.mini .badge')[0].textContent = PRODUCTS[lang].mini.badge;
-  document.querySelectorAll('.product-card.standard .badge')[0].textContent = PRODUCTS[lang].standard.badge;
+  renderTrust(lang);
+  renderProductsGrid(lang);
   renderCompare(dict.compare.rows);
   renderCommon(dict.common.items);
   renderMarquee(dict.marquee);
@@ -1070,12 +1002,22 @@ function applyLang(lang){
 }
 
 document.querySelectorAll('.langsw button').forEach(btn=>{
-  btn.addEventListener('click', ()=> applyLang(btn.dataset.lang));
+  btn.addEventListener('click', ()=>{
+    applyLang(btn.dataset.lang);
+    attachTilt('.product-card', 5);
+    attachTilt('.trust-card', 4);
+  });
 });
 
 let initialLang = 'ku';
 try{ initialLang = localStorage.getItem('sk_lang') || 'ku'; }catch(e){}
-applyLang(initialLang);
+
+(async function initDynamicSections(){
+  await loadDynamicContent();
+  applyLang(initialLang);
+  attachTilt('.product-card', 5);
+  attachTilt('.trust-card', 4);
+})();
 
 /* animated hero stat counters */
 const counterIO = new IntersectionObserver((entries)=>{
@@ -1117,8 +1059,6 @@ function attachTilt(selector, strength){
     });
   });
 }
-attachTilt('.product-card', 5);
-attachTilt('.trust-card', 4);
 
 /* magnetic pull on primary buttons */
 document.querySelectorAll('.btn').forEach(btn=>{
@@ -1264,52 +1204,6 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
   })
   .finally(() => { submitBtn.disabled = false; });
 });
-
-/* ===================== LIVE PRICING ===================== */
-/* The API (server.js) is deployed on the same Vercel project as this page
-   (see vercel.json rewrites), so we just call the current origin. */
-const PRICE_API_BASE = window.location.origin;
-
-const currencySymbol = { USD:'$', EUR:'€', IQD:'IQD' };
-
-function renderPrice(container, product){
-  const sym = currencySymbol[product.currency] || product.currency + ' ';
-  container.innerHTML = '';
-  const finalEl = document.createElement('span');
-  finalEl.className = 'price-final';
-  finalEl.textContent = `${sym}${product.final_price}`;
-  container.appendChild(finalEl);
-  if(product.on_sale){
-    const origEl = document.createElement('span');
-    origEl.className = 'price-original';
-    origEl.textContent = `${sym}${product.price}`;
-    container.appendChild(origEl);
-    const badge = document.createElement('span');
-    badge.className = 'discount-badge';
-    badge.textContent = `%${product.discount_percent}-`;
-    container.appendChild(badge);
-  }
-}
-
-async function loadLivePrices(){
-  const boxes = document.querySelectorAll('.price-box[data-slug]');
-  if(!boxes.length) return;
-  boxes.forEach(b => b.innerHTML = '<span class="price-loading">... نرخ باردەکرێت</span>');
-  try{
-    const res = await fetch(`${PRICE_API_BASE}/api/products`);
-    if(!res.ok) throw new Error('bad response');
-    const products = await res.json();
-    boxes.forEach(box=>{
-      const p = products.find(pr => pr.slug === box.dataset.slug);
-      if(p) renderPrice(box, p);
-      else box.innerHTML = '';
-    });
-  }catch(err){
-    // API not reachable (e.g. not deployed yet) — hide the price box quietly
-    boxes.forEach(b => b.innerHTML = '');
-  }
-}
-loadLivePrices();
 
 /* mobile burger -> reveal nav links inline */
 document.querySelector('.burger').addEventListener('click', ()=>{

@@ -42,9 +42,8 @@
     min-height:100vh; display:flex; align-items:flex-start; justify-content:center;
     padding:48px 18px 80px;
   }
-  .wrap{width:100%; max-width:760px;}
+  .wrap{width:100%; max-width:900px;}
 
-  /* ---------- header ---------- */
   .top{display:flex; align-items:center; justify-content:space-between; margin-bottom:34px;}
   .brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.15rem;}
   .brand .dot{width:9px; height:9px; border-radius:50%; background:var(--cyan); box-shadow:0 0 14px 3px #0f7faeaa; animation:pulse 1.8s infinite;}
@@ -60,7 +59,6 @@
   h1{font-size:1.5rem; font-weight:800; margin:0 0 4px;}
   .sub{color:var(--text-dim); margin:0 0 32px; font-size:.92rem; line-height:1.7;}
 
-  /* ---------- login ---------- */
   #login-view, #panel-view{display:none;}
   .login-card{
     background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
@@ -73,12 +71,13 @@
   .login-card h1{margin-bottom:6px;}
   .login-card .sub{margin-bottom:26px;}
   label{display:block; font-size:.82rem; color:var(--text-dim); font-weight:600; margin-bottom:7px;}
-  input{
+  input, textarea, select{
     width:100%; padding:12px 14px; border-radius:11px; border:1px solid var(--border);
     background:#fff; font-family:inherit; font-size:.95rem; margin-bottom:16px; transition:.2s;
     color:var(--text);
   }
-  input:focus{outline:none; border-color:var(--cyan); box-shadow:0 0 0 3px var(--cyan-soft);}
+  textarea{resize:vertical; min-height:70px;}
+  input:focus, textarea:focus, select:focus{outline:none; border-color:var(--cyan); box-shadow:0 0 0 3px var(--cyan-soft);}
 
   button{font-family:inherit; cursor:pointer; border:none; border-radius:999px;}
   .btn-primary{
@@ -92,54 +91,73 @@
   .msg.error{color:var(--danger);}
   .msg.ok{color:var(--ok);}
 
-  /* ---------- product cards ---------- */
+  /* ---------- tabs ---------- */
+  .tabs{display:flex; gap:6px; background:var(--surface-2); border:1px solid var(--border); border-radius:999px; padding:5px; width:fit-content; margin-bottom:28px;}
+  .tabs button{padding:10px 20px; border-radius:999px; font-size:.86rem; font-weight:700; color:var(--text-faint); transition:.2s;}
+  .tabs button.active{background:var(--cyan); color:#fff; box-shadow:0 6px 14px -6px #0f7fae99;}
+  .tabs button:not(.active):hover{color:var(--text);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  /* ---------- cards ---------- */
   .card{
     background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
     padding:26px 26px 24px; margin-bottom:20px; box-shadow:var(--shadow-sm); transition:box-shadow .25s var(--ease);
   }
   .card:hover{box-shadow:var(--shadow-md);}
   .card-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:22px; gap:10px;}
-  .product-title{font-weight:800; font-size:1.1rem;}
-  .product-slug{
+  .card-title{font-weight:800; font-size:1.1rem;}
+  .card-slug{
     font-family:var(--ff-mono); direction:ltr; font-size:.7rem; color:var(--text-faint);
     background:var(--surface-2); padding:3px 9px; border-radius:999px; border:1px solid var(--border-soft);
   }
+  .del-btn{background:var(--danger-soft); color:var(--danger); padding:7px 16px; font-size:.78rem; font-weight:700;}
+  .del-btn:hover{background:#c0392b22;}
 
-  .fields{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:8px;}
-  .field-currency{grid-column:1 / -1;}
-  @media (max-width:520px){.fields{grid-template-columns:1fr;}}
+  .fields{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .field-full{grid-column:1 / -1;}
+  @media (max-width:560px){.fields{grid-template-columns:1fr;}}
 
-  /* currency segmented toggle */
-  .seg{
-    display:flex; background:var(--surface-2); border:1px solid var(--border); border-radius:999px;
-    padding:4px; gap:2px; width:fit-content;
-  }
-  .seg button{
-    padding:8px 20px; border-radius:999px; font-size:.82rem; font-weight:700; color:var(--text-faint);
-    font-family:var(--ff-mono); letter-spacing:.02em; transition:.2s;
-  }
+  .lang-tabs{display:flex; gap:4px; margin-bottom:10px;}
+  .lang-tabs button{padding:6px 14px; border-radius:8px; font-size:.76rem; font-weight:700; font-family:var(--ff-mono); background:var(--surface-2); color:var(--text-faint); border:1px solid var(--border-soft);}
+  .lang-tabs button.active{background:var(--cyan); color:#fff; border-color:var(--cyan);}
+  .lang-pane{display:none;}
+  .lang-pane.active{display:block;}
+
+  .seg{display:flex; background:var(--surface-2); border:1px solid var(--border); border-radius:999px; padding:4px; gap:2px; width:fit-content; margin-bottom:16px;}
+  .seg button{padding:8px 20px; border-radius:999px; font-size:.82rem; font-weight:700; color:var(--text-faint); font-family:var(--ff-mono); letter-spacing:.02em; transition:.2s;}
   .seg button.active{background:var(--cyan); color:#fff; box-shadow:0 6px 14px -6px #0f7fae99;}
-  .seg button:not(.active):hover{color:var(--text);}
 
   .final-price{
-    display:flex; align-items:baseline; gap:8px; margin:18px 0 20px; padding:14px 16px;
+    display:flex; align-items:baseline; gap:8px; margin:0 0 18px; padding:14px 16px;
     background:var(--ok-soft); border:1px solid #0b8f7e33; border-radius:var(--radius-sm);
   }
   .final-price .label{font-size:.78rem; color:var(--text-dim); font-weight:600;}
   .final-price .value{font-family:var(--ff-mono); font-size:1.15rem; font-weight:700; color:var(--ok); direction:ltr;}
-  .final-price .original{
-    font-family:var(--ff-mono); font-size:.85rem; color:var(--text-faint); text-decoration:line-through; direction:ltr;
-  }
+  .final-price .original{font-family:var(--ff-mono); font-size:.85rem; color:var(--text-faint); text-decoration:line-through; direction:ltr;}
 
-  .card-foot{display:flex; align-items:center; gap:16px;}
-  .save-btn{
-    background:var(--cyan); color:#fff; padding:11px 26px; font-weight:700; font-size:.88rem; transition:.2s;
-    box-shadow:0 10px 22px -10px #0f7faeaa;
-  }
+  .img-preview{width:120px; height:120px; border-radius:12px; object-fit:cover; border:1px solid var(--border); background:var(--surface-2); margin-bottom:10px; display:block;}
+  .img-row{display:flex; align-items:flex-start; gap:16px; margin-bottom:18px; flex-wrap:wrap;}
+  .img-row .controls{flex:1; min-width:200px;}
+  .file-input{padding:9px; background:#fff;}
+
+  .list-editor{margin-bottom:16px;}
+  .list-editor .row{display:flex; gap:8px; margin-bottom:8px; align-items:center;}
+  .list-editor .row input{margin-bottom:0; flex:1;}
+  .list-editor .rm{background:var(--danger-soft); color:var(--danger); width:34px; height:34px; flex-shrink:0; font-weight:800; border-radius:8px;}
+  .add-row-btn{background:var(--surface-2); border:1px dashed var(--border); color:var(--text-dim); padding:9px 16px; font-size:.82rem; font-weight:600; border-radius:10px; width:100%;}
+  .add-row-btn:hover{background:var(--surface); color:var(--text);}
+
+  .card-foot{display:flex; align-items:center; gap:16px; margin-top:6px;}
+  .save-btn{background:var(--cyan); color:#fff; padding:11px 26px; font-weight:700; font-size:.88rem; transition:.2s; box-shadow:0 10px 22px -10px #0f7faeaa;}
   .save-btn:hover{background:#0d6f98;}
   .save-btn:disabled{opacity:.55; cursor:not-allowed; box-shadow:none;}
 
+  .add-new-btn{background:var(--amber); color:#fff; padding:12px 24px; font-weight:700; font-size:.9rem; margin-bottom:24px; box-shadow:0 10px 22px -10px #c06e1faa;}
+  .add-new-btn:hover{background:#a75d18;}
+
   .loading{color:var(--text-dim); font-size:.9rem; text-align:center; padding:40px 0;}
+  .hint{font-size:.78rem; color:var(--text-faint); margin:-10px 0 16px;}
 </style>
 </head>
 <body>
@@ -149,7 +167,7 @@
     <div class="login-card">
       <div class="login-icon">🔒</div>
       <h1>چوونەژوورەوەی ئەدمین</h1>
-      <p class="sub">Starlink Kurd — بەڕێوەبردنی نرخ</p>
+      <p class="sub">Starlink Kurd — بەڕێوەبردنی ماڵپەڕ</p>
       <label>ناوی بەکارهێنەر</label>
       <input id="login-user" autocomplete="username">
       <label>وشەی نهێنی</label>
@@ -164,9 +182,29 @@
       <div class="brand"><span class="dot"></span>Starlink <span class="sub">Kurd</span></div>
       <button class="logout" id="logout-btn">چوونەدەرەوە</button>
     </div>
-    <h1>بەڕێوەبردنی نرخ</h1>
-    <p class="sub">نرخ، داشکاندن و دراوی هەر ئامێرێک لێرە دەستکاری بکە. گۆڕانکارییەکان یەکسەر لە ماڵپەڕ دەردەکەون.</p>
-    <div id="products-container"><div class="loading">... باردەکرێت</div></div>
+    <h1>بەڕێوەبردنی ماڵپەڕ</h1>
+    <p class="sub">ئامێر، خاڵەکانی «بۆچی ئێمە» و گالەری وێنە لێرەوە دەستکاری بکە. گۆڕانکارییەکان یەکسەر لە ماڵپەڕ دەردەکەون.</p>
+
+    <div class="tabs">
+      <button data-tab="products" class="active">ئامێرەکان</button>
+      <button data-tab="trust">بۆچی ئێمە</button>
+      <button data-tab="gallery">گالەری وێنە</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-products">
+      <button class="add-new-btn" id="add-product-btn">+ زیادکردنی ئامێری نوێ</button>
+      <div id="products-container"><div class="loading">... باردەکرێت</div></div>
+    </div>
+
+    <div class="tab-panel" id="tab-trust">
+      <button class="add-new-btn" id="add-trust-btn">+ زیادکردنی خاڵی نوێ</button>
+      <div id="trust-container"><div class="loading">... باردەکرێت</div></div>
+    </div>
+
+    <div class="tab-panel" id="tab-gallery">
+      <button class="add-new-btn" id="add-gallery-btn">+ زیادکردنی وێنەی نوێ</button>
+      <div id="gallery-container"><div class="loading">... باردەکرێت</div></div>
+    </div>
   </div>
 
 </div>
@@ -175,16 +213,47 @@
 const API_BASE = window.location.origin;
 const CURRENCIES = ['USD','IQD'];
 const currencySymbol = { USD:'$', IQD:'IQD' };
+const ICONS = {
+  'bolt':{label:'بروسکە', path:'M13 2 3 14h7l-1 8 10-12h-7z'},
+  'mountain':{label:'چیا', path:'M3 20 9 8l4 6 3-5 5 11z'},
+  'shield-check':{label:'پارێزراوی', path:'M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6z|M9 12l2 2 4-4'},
+  'wifi':{label:'وایفای', path:'M2 8.5a16 16 0 0 1 20 0|M5 12a11 11 0 0 1 14 0|M8.5 15.5a6 6 0 0 1 7 0|M12 19h.01'},
+  'globe':{label:'جیهان', path:'M12 2a10 10 0 1 0 .0001 0z|M2 12h20|M12 2c2.5 2.7 4 6.2 4 10s-1.5 7.3-4 10c-2.5-2.7-4-6.2-4-10s1.5-7.3 4-10z'},
+  'clock':{label:'کات', path:'M12 2a10 10 0 1 0 .0001 0z|M12 6v6l4 2'}
+};
 
-let token = null; // kept in memory only — re-login required after page reload
+let token = null;
+let allProducts = [], allTrust = [], allGallery = [];
 
 const loginView = document.getElementById('login-view');
 const panelView = document.getElementById('panel-view');
 const loginMsg = document.getElementById('login-msg');
-const container = document.getElementById('products-container');
 
 function showLogin(){ loginView.style.display='block'; panelView.style.display='none'; }
 function showPanel(){ loginView.style.display='none'; panelView.style.display='block'; }
+function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function iconSvg(key){
+  const icon = ICONS[key] || ICONS.bolt;
+  const paths = icon.path.split('|').map(d => `<path d="${d}"/>`).join('');
+  return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${paths}</svg>`;
+}
+
+async function authFetch(url, opts={}){
+  opts.headers = Object.assign({}, opts.headers, { 'Authorization': `Bearer ${token}` });
+  const res = await fetch(url, opts);
+  if(res.status === 401){ token = null; showLogin(); throw new Error('Unauthorized'); }
+  return res;
+}
+
+function fileToBase64(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 document.getElementById('login-btn').addEventListener('click', async ()=>{
   loginMsg.textContent = '';
@@ -199,8 +268,8 @@ document.getElementById('login-btn').addEventListener('click', async ()=>{
     const data = await res.json();
     if(!res.ok){ loginMsg.textContent = data.error || 'هەڵە ڕوویدا'; return; }
     token = data.token;
-    await loadProducts();
     showPanel();
+    loadAll();
   }catch(err){
     loginMsg.textContent = 'نەتوانرا پەیوەندی بە سێرڤەرەوە بکرێت';
   }
@@ -211,126 +280,502 @@ document.getElementById('logout-btn').addEventListener('click', ()=>{
   showLogin();
 });
 
-async function loadProducts(){
-  const res = await fetch(`${API_BASE}/api/admin/products`, {
-    headers: { 'Authorization': `Bearer ${token}` }
+document.querySelectorAll('.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
   });
-  if(!res.ok){ showLogin(); return; }
-  const products = await res.json();
-  renderProducts(products);
+});
+
+async function loadAll(){
+  await Promise.all([loadProducts(), loadTrust(), loadGallery()]);
 }
 
-function renderProducts(products){
-  container.innerHTML = '';
-  products.forEach(p=>{
-    let selectedCurrency = CURRENCIES.includes(p.currency) ? p.currency : 'USD';
+/* ============================================================
+   PRODUCTS
+   ============================================================ */
+async function loadProducts(){
+  const res = await authFetch(`${API_BASE}/api/admin/products`);
+  allProducts = await res.json();
+  renderProducts();
+}
 
+function blankProduct(){
+  return { slug:'', name:'', price:0, discount_percent:0, currency:'USD', sort_order: allProducts.length+1,
+    image:null, tagline:{ku:'',en:'',ar:''}, description:{ku:'',en:'',ar:''}, badge:{ku:'',en:'',ar:''},
+    features:[], bestfor:[], _isNew:true };
+}
+
+document.getElementById('add-product-btn').addEventListener('click', ()=>{
+  allProducts.push(blankProduct());
+  renderProducts();
+});
+
+function renderProducts(){
+  const container = document.getElementById('products-container');
+  container.innerHTML = '';
+  allProducts.forEach((p, idx)=>{
     const card = document.createElement('div');
     card.className = 'card';
+    let pendingImage = null; // {mime_type, data} once a new file is chosen
+
     card.innerHTML = `
       <div class="card-head">
-        <div class="product-title">${p.name}</div>
-        <div class="product-slug">${p.slug}</div>
+        <div class="card-title">${p._isNew ? 'ئامێری نوێ' : escapeHtml(p.name)}</div>
+        ${p._isNew ? '' : `<div class="card-slug">${escapeHtml(p.slug)}</div>`}
       </div>
+
+      <div class="img-row">
+        <div>
+          <img class="img-preview" src="${p.image || ''}" style="${p.image ? '' : 'display:none;'}">
+        </div>
+        <div class="controls">
+          <label>وێنەی ئامێر</label>
+          <input type="file" accept="image/*" class="file-input img-file">
+          <p class="hint">وێنەیەکی بچووک هەڵبژێرە (کەمتر لە 2 مێگابایت باشترە)</p>
+        </div>
+      </div>
+
+      <div class="fields">
+        <div>
+          <label>ناوی ئامێر (وەک Starlink Mini)</label>
+          <input class="f-name" value="${escapeHtml(p.name)}">
+        </div>
+        <div>
+          <label>ڕیزبەندی نیشاندان (ژمارە، بچووکتر یەکەم دێت)</label>
+          <input type="number" class="f-order" value="${p.sort_order}">
+        </div>
+      </div>
+
       <div class="fields">
         <div>
           <label>نرخی سەرەکی</label>
-          <input type="number" min="0" step="0.01" class="price-input" value="${p.price}">
+          <input type="number" min="0" step="0.01" class="f-price" value="${p.price}">
         </div>
         <div>
           <label>ڕێژەی داشکاندن (%)</label>
-          <input type="number" min="0" max="100" step="1" class="discount-input" value="${p.discount_percent}">
-        </div>
-        <div class="field-currency">
-          <label>دراو</label>
-          <div class="seg" data-currency-toggle>
-            <button type="button" data-value="USD">USD — دۆلار</button>
-            <button type="button" data-value="IQD">IQD — دیناری عێراقی</button>
-          </div>
+          <input type="number" min="0" max="100" step="1" class="f-discount" value="${p.discount_percent}">
         </div>
       </div>
+
+      <label>دراو</label>
+      <div class="seg f-currency-seg">
+        <button type="button" data-value="USD">USD — دۆلار</button>
+        <button type="button" data-value="IQD">IQD — دیناری عێراقی</button>
+      </div>
+
       <div class="final-price">
         <span class="label">نرخی کۆتایی:</span>
         <span class="value" data-final></span>
         <span class="original" data-original></span>
       </div>
-      <div class="card-foot">
-        <button class="save-btn">پاشەکەوتکردن</button>
+
+      <div class="lang-tabs">
+        <button type="button" data-lang="ku" class="active">کوردی</button>
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="ar">عربي</button>
+      </div>
+      ${['ku','en','ar'].map(l => `
+        <div class="lang-pane ${l==='ku'?'active':''}" data-pane="${l}">
+          <label>وشەی کورت (badge)</label>
+          <input class="f-badge" data-lang="${l}" value="${escapeHtml(p.badge[l]||'')}">
+          <label>ڕستەی کورت (tagline)</label>
+          <input class="f-tagline" data-lang="${l}" value="${escapeHtml(p.tagline[l]||'')}">
+          <label>وەسف</label>
+          <textarea class="f-desc" data-lang="${l}">${escapeHtml(p.description[l]||'')}</textarea>
+        </div>
+      `).join('')}
+
+      <div class="lang-tabs feat-lang-tabs">
+        <button type="button" data-lang="ku" class="active">کوردی</button>
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="ar">عربي</button>
+      </div>
+      <label>تایبەتمەندییەکان (خاڵەکان)</label>
+      <div class="list-editor feat-editor"></div>
+      <button type="button" class="add-row-btn add-feat">+ زیادکردنی خاڵێک</button>
+
+      <label style="margin-top:18px;">باشترین بەکارهێنان (چیپەکان)</label>
+      <div class="list-editor bestfor-editor"></div>
+      <button type="button" class="add-row-btn add-bestfor">+ زیادکردنی چیپێک</button>
+
+      <div class="card-foot" style="margin-top:20px;">
+        <button class="save-btn">${p._isNew ? 'زیادکردن' : 'پاشەکەوتکردن'}</button>
+        ${p._isNew ? '' : '<button class="del-btn">سڕینەوە</button>'}
         <div class="msg" data-msg></div>
       </div>
     `;
-    const priceInput = card.querySelector('.price-input');
-    const discountInput = card.querySelector('.discount-input');
+
+    // currency seg
+    let selectedCurrency = CURRENCIES.includes(p.currency) ? p.currency : 'USD';
+    const segBtns = card.querySelectorAll('.f-currency-seg button');
+    function setCurrencyUI(){ segBtns.forEach(b=>b.classList.toggle('active', b.dataset.value===selectedCurrency)); }
+    segBtns.forEach(b=> b.addEventListener('click', ()=>{ selectedCurrency = b.dataset.value; setCurrencyUI(); updatePreview(); }));
+    setCurrencyUI();
+
+    const priceInput = card.querySelector('.f-price');
+    const discountInput = card.querySelector('.f-discount');
     const finalEl = card.querySelector('[data-final]');
     const originalEl = card.querySelector('[data-original]');
-    const msgEl = card.querySelector('[data-msg]');
-    const saveBtn = card.querySelector('.save-btn');
-    const segButtons = card.querySelectorAll('[data-currency-toggle] button');
-
-    function setCurrencyUI(){
-      segButtons.forEach(btn=>{
-        btn.classList.toggle('active', btn.dataset.value === selectedCurrency);
-      });
-    }
-
-    function updateFinalPreview(){
+    function updatePreview(){
       const price = parseFloat(priceInput.value) || 0;
       const discount = parseFloat(discountInput.value) || 0;
       const final = (price * (1 - discount/100)).toFixed(2);
       const sym = currencySymbol[selectedCurrency];
-      finalEl.textContent = selectedCurrency === 'USD' ? `${sym}${final}` : `${final} ${sym}`;
-      if(discount > 0){
-        originalEl.textContent = selectedCurrency === 'USD' ? `${sym}${price.toFixed(2)}` : `${price.toFixed(2)} ${sym}`;
-      } else {
-        originalEl.textContent = '';
-      }
+      finalEl.textContent = selectedCurrency==='USD' ? `${sym}${final}` : `${final} ${sym}`;
+      originalEl.textContent = discount>0 ? (selectedCurrency==='USD'?`${sym}${price.toFixed(2)}`:`${price.toFixed(2)} ${sym}`) : '';
     }
+    priceInput.addEventListener('input', updatePreview);
+    discountInput.addEventListener('input', updatePreview);
+    updatePreview();
 
-    segButtons.forEach(btn=>{
+    // lang tabs (text fields)
+    card.querySelectorAll('.lang-tabs:not(.feat-lang-tabs) button').forEach(btn=>{
       btn.addEventListener('click', ()=>{
-        selectedCurrency = btn.dataset.value;
-        setCurrencyUI();
-        updateFinalPreview();
+        card.querySelectorAll('.lang-tabs:not(.feat-lang-tabs) button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        card.querySelectorAll('.lang-pane').forEach(pane=> pane.classList.toggle('active', pane.dataset.pane===btn.dataset.lang));
       });
     });
 
-    priceInput.addEventListener('input', updateFinalPreview);
-    discountInput.addEventListener('input', updateFinalPreview);
-    setCurrencyUI();
-    updateFinalPreview();
+    // image file
+    card.querySelector('.img-file').addEventListener('change', async (e)=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      const data = await fileToBase64(file);
+      pendingImage = { mime_type: file.type, data };
+      const preview = card.querySelector('.img-preview');
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = 'block';
+    });
 
+    // features / bestfor list editors (per language, but shown as 3 synced lists indexed together)
+    let featLang = 'ku';
+    const featEditor = card.querySelector('.feat-editor');
+    function renderFeatList(){
+      featEditor.innerHTML = p.features.map((f,i)=>`
+        <div class="row"><input data-i="${i}" value="${escapeHtml(f[featLang]||'')}"><button type="button" class="rm" data-i="${i}">×</button></div>
+      `).join('');
+      featEditor.querySelectorAll('input').forEach(inp=>{
+        inp.addEventListener('input', ()=>{ p.features[inp.dataset.i][featLang] = inp.value; });
+      });
+      featEditor.querySelectorAll('.rm').forEach(btn=>{
+        btn.addEventListener('click', ()=>{ p.features.splice(btn.dataset.i,1); renderFeatList(); });
+      });
+    }
+    card.querySelector('.add-feat').addEventListener('click', ()=>{
+      p.features.push({ku:'',en:'',ar:''}); renderFeatList();
+    });
+    card.querySelectorAll('.feat-lang-tabs button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        card.querySelectorAll('.feat-lang-tabs button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        featLang = btn.dataset.lang;
+        renderFeatList();
+      });
+    });
+    renderFeatList();
+
+    let bestforEditor = card.querySelector('.bestfor-editor');
+    function renderBestforList(){
+      bestforEditor.innerHTML = p.bestfor.map((f,i)=>`
+        <div class="row"><input data-i="${i}" value="${escapeHtml(f[featLang]||'')}"><button type="button" class="rm" data-i="${i}">×</button></div>
+      `).join('');
+      bestforEditor.querySelectorAll('input').forEach(inp=>{
+        inp.addEventListener('input', ()=>{ p.bestfor[inp.dataset.i][featLang] = inp.value; });
+      });
+      bestforEditor.querySelectorAll('.rm').forEach(btn=>{
+        btn.addEventListener('click', ()=>{ p.bestfor.splice(btn.dataset.i,1); renderBestforList(); });
+      });
+    }
+    card.querySelector('.add-bestfor').addEventListener('click', ()=>{
+      p.bestfor.push({ku:'',en:'',ar:''}); renderBestforList();
+    });
+    card.querySelectorAll('.feat-lang-tabs button').forEach(btn=>{
+      btn.addEventListener('click', renderBestforList);
+    });
+    renderBestforList();
+
+    // save
+    const msgEl = card.querySelector('[data-msg]');
+    const saveBtn = card.querySelector('.save-btn');
     saveBtn.addEventListener('click', async ()=>{
-      msgEl.className = 'msg';
-      msgEl.textContent = '';
+      msgEl.className = 'msg'; msgEl.textContent = '';
       saveBtn.disabled = true;
       try{
-        const res = await fetch(`${API_BASE}/api/admin/products/${p.slug}`, {
-          method:'PUT',
-          headers:{
-            'Content-Type':'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            price: parseFloat(priceInput.value),
-            discount_percent: parseFloat(discountInput.value) || 0,
-            currency: selectedCurrency
-          })
-        });
-        const data = await res.json();
-        if(!res.ok){
-          msgEl.classList.add('error');
-          msgEl.textContent = data.error || 'هەڵە ڕوویدا';
-        } else {
-          msgEl.classList.add('ok');
-          msgEl.textContent = 'پاشەکەوت کرا ✓';
+        let image_id = null, image_url = p.image && !p._isNew ? undefined : undefined;
+        if(pendingImage){
+          const upRes = await authFetch(`${API_BASE}/api/admin/images`, {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify(pendingImage)
+          });
+          const upData = await upRes.json();
+          if(!upRes.ok) throw new Error(upData.error || 'وێنە بار نەبوو');
+          image_id = upData.id;
         }
+
+        const body = {
+          name: card.querySelector('.f-name').value.trim(),
+          price: parseFloat(card.querySelector('.f-price').value),
+          discount_percent: parseFloat(card.querySelector('.f-discount').value) || 0,
+          currency: selectedCurrency,
+          sort_order: parseInt(card.querySelector('.f-order').value) || 0,
+          image_id: image_id,
+          tagline_ku: card.querySelector('.f-tagline[data-lang="ku"]').value,
+          tagline_en: card.querySelector('.f-tagline[data-lang="en"]').value,
+          tagline_ar: card.querySelector('.f-tagline[data-lang="ar"]').value,
+          desc_ku: card.querySelector('.f-desc[data-lang="ku"]').value,
+          desc_en: card.querySelector('.f-desc[data-lang="en"]').value,
+          desc_ar: card.querySelector('.f-desc[data-lang="ar"]').value,
+          badge_ku: card.querySelector('.f-badge[data-lang="ku"]').value,
+          badge_en: card.querySelector('.f-badge[data-lang="en"]').value,
+          badge_ar: card.querySelector('.f-badge[data-lang="ar"]').value,
+          features: p.features,
+          bestfor: p.bestfor
+        };
+        if(!body.name){ throw new Error('ناوی ئامێر پێویستە'); }
+
+        let res;
+        if(p._isNew){
+          res = await authFetch(`${API_BASE}/api/admin/products`, {
+            method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
+          });
+        } else {
+          res = await authFetch(`${API_BASE}/api/admin/products/${p.slug}`, {
+            method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
+          });
+        }
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || 'هەڵە ڕوویدا');
+        msgEl.classList.add('ok'); msgEl.textContent = 'پاشەکەوت کرا ✓';
+        await loadProducts();
       }catch(err){
-        msgEl.classList.add('error');
-        msgEl.textContent = 'نەتوانرا پەیوەندی بکرێت';
+        msgEl.classList.add('error'); msgEl.textContent = err.message || 'نەتوانرا پەیوەندی بکرێت';
       }finally{
         saveBtn.disabled = false;
       }
     });
+
+    const delBtn = card.querySelector('.del-btn');
+    if(delBtn){
+      delBtn.addEventListener('click', async ()=>{
+        if(!confirm(`دڵنیایت لە سڕینەوەی "${p.name}"؟`)) return;
+        try{
+          const res = await authFetch(`${API_BASE}/api/admin/products/${p.slug}`, { method:'DELETE' });
+          if(!res.ok) throw new Error();
+          await loadProducts();
+        }catch(err){
+          alert('نەتوانرا بسڕدرێتەوە');
+        }
+      });
+    }
+
+    container.appendChild(card);
+  });
+}
+
+/* ============================================================
+   TRUST FEATURES ("Why choose us")
+   ============================================================ */
+async function loadTrust(){
+  const res = await authFetch(`${API_BASE}/api/admin/trust-features`);
+  allTrust = await res.json();
+  renderTrust();
+}
+
+document.getElementById('add-trust-btn').addEventListener('click', ()=>{
+  allTrust.push({ id:null, icon:'bolt', sort_order: allTrust.length+1,
+    title:{ku:'',en:'',ar:''}, description:{ku:'',en:'',ar:''}, _isNew:true });
+  renderTrust();
+});
+
+function renderTrust(){
+  const container = document.getElementById('trust-container');
+  container.innerHTML = '';
+  allTrust.forEach(t=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="card-title">${t._isNew ? 'خاڵی نوێ' : escapeHtml(t.title.ku || t.title.en || '')}</div>
+      </div>
+      <div class="fields">
+        <div>
+          <label>ئایکۆن</label>
+          <select class="f-icon">${Object.entries(ICONS).map(([k,v])=>`<option value="${k}" ${k===t.icon?'selected':''}>${v.label}</option>`).join('')}</select>
+        </div>
+        <div>
+          <label>ڕیزبەندی نیشاندان</label>
+          <input type="number" class="f-order" value="${t.sort_order}">
+        </div>
+      </div>
+      <div class="lang-tabs">
+        <button type="button" data-lang="ku" class="active">کوردی</button>
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="ar">عربي</button>
+      </div>
+      ${['ku','en','ar'].map(l=>`
+        <div class="lang-pane ${l==='ku'?'active':''}" data-pane="${l}">
+          <label>ناونیشان</label>
+          <input class="f-title" data-lang="${l}" value="${escapeHtml(t.title[l]||'')}">
+          <label>وەسف</label>
+          <textarea class="f-desc" data-lang="${l}">${escapeHtml(t.description[l]||'')}</textarea>
+        </div>
+      `).join('')}
+      <div class="card-foot">
+        <button class="save-btn">${t._isNew ? 'زیادکردن' : 'پاشەکەوتکردن'}</button>
+        ${t._isNew ? '' : '<button class="del-btn">سڕینەوە</button>'}
+        <div class="msg" data-msg></div>
+      </div>
+    `;
+
+    card.querySelectorAll('.lang-tabs button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        card.querySelectorAll('.lang-tabs button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        card.querySelectorAll('.lang-pane').forEach(pane=> pane.classList.toggle('active', pane.dataset.pane===btn.dataset.lang));
+      });
+    });
+
+    const msgEl = card.querySelector('[data-msg]');
+    const saveBtn = card.querySelector('.save-btn');
+    saveBtn.addEventListener('click', async ()=>{
+      msgEl.className = 'msg'; msgEl.textContent = '';
+      saveBtn.disabled = true;
+      try{
+        const body = {
+          icon: card.querySelector('.f-icon').value,
+          sort_order: parseInt(card.querySelector('.f-order').value) || 0,
+          title_ku: card.querySelector('.f-title[data-lang="ku"]').value,
+          title_en: card.querySelector('.f-title[data-lang="en"]').value,
+          title_ar: card.querySelector('.f-title[data-lang="ar"]').value,
+          desc_ku: card.querySelector('.f-desc[data-lang="ku"]').value,
+          desc_en: card.querySelector('.f-desc[data-lang="en"]').value,
+          desc_ar: card.querySelector('.f-desc[data-lang="ar"]').value
+        };
+        let res;
+        if(t._isNew){
+          res = await authFetch(`${API_BASE}/api/admin/trust-features`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+        } else {
+          res = await authFetch(`${API_BASE}/api/admin/trust-features/${t.id}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+        }
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || 'هەڵە ڕوویدا');
+        msgEl.classList.add('ok'); msgEl.textContent = 'پاشەکەوت کرا ✓';
+        await loadTrust();
+      }catch(err){
+        msgEl.classList.add('error'); msgEl.textContent = err.message || 'نەتوانرا پەیوەندی بکرێت';
+      }finally{ saveBtn.disabled = false; }
+    });
+
+    const delBtn = card.querySelector('.del-btn');
+    if(delBtn){
+      delBtn.addEventListener('click', async ()=>{
+        if(!confirm('دڵنیایت لە سڕینەوەی ئەم خاڵە؟')) return;
+        try{
+          const res = await authFetch(`${API_BASE}/api/admin/trust-features/${t.id}`, { method:'DELETE' });
+          if(!res.ok) throw new Error();
+          await loadTrust();
+        }catch(err){ alert('نەتوانرا بسڕدرێتەوە'); }
+      });
+    }
+
+    container.appendChild(card);
+  });
+}
+
+/* ============================================================
+   GALLERY
+   ============================================================ */
+async function loadGallery(){
+  const res = await authFetch(`${API_BASE}/api/admin/gallery`);
+  allGallery = await res.json();
+  renderGallery();
+}
+
+document.getElementById('add-gallery-btn').addEventListener('click', ()=>{
+  allGallery.push({ id:null, image:null, alt:'', sort_order: allGallery.length+1, _isNew:true });
+  renderGallery();
+});
+
+function renderGallery(){
+  const container = document.getElementById('gallery-container');
+  container.innerHTML = '';
+  allGallery.forEach(g=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    let pendingImage = null;
+    card.innerHTML = `
+      <div class="img-row">
+        <div><img class="img-preview" src="${g.image||''}" style="${g.image?'':'display:none;'}"></div>
+        <div class="controls">
+          <label>وێنە</label>
+          <input type="file" accept="image/*" class="file-input img-file">
+          <label>دەق بۆ وێنە (alt)</label>
+          <input class="f-alt" value="${escapeHtml(g.alt||'')}">
+          <label>ڕیزبەندی نیشاندان</label>
+          <input type="number" class="f-order" value="${g.sort_order}">
+        </div>
+      </div>
+      <div class="card-foot">
+        <button class="save-btn">${g._isNew?'زیادکردن':'پاشەکەوتکردن'}</button>
+        ${g._isNew ? '' : '<button class="del-btn">سڕینەوە</button>'}
+        <div class="msg" data-msg></div>
+      </div>
+    `;
+    card.querySelector('.img-file').addEventListener('change', async (e)=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      const data = await fileToBase64(file);
+      pendingImage = { mime_type: file.type, data };
+      const preview = card.querySelector('.img-preview');
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = 'block';
+    });
+
+    const msgEl = card.querySelector('[data-msg]');
+    const saveBtn = card.querySelector('.save-btn');
+    saveBtn.addEventListener('click', async ()=>{
+      msgEl.className='msg'; msgEl.textContent='';
+      saveBtn.disabled = true;
+      try{
+        let image_id = null;
+        if(pendingImage){
+          const upRes = await authFetch(`${API_BASE}/api/admin/images`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(pendingImage) });
+          const upData = await upRes.json();
+          if(!upRes.ok) throw new Error(upData.error || 'وێنە بار نەبوو');
+          image_id = upData.id;
+        }
+        if(g._isNew && !image_id) throw new Error('تکایە وێنەیەک هەڵبژێرە');
+        const body = { alt: card.querySelector('.f-alt').value, sort_order: parseInt(card.querySelector('.f-order').value)||0, image_id };
+        let res;
+        if(g._isNew){
+          res = await authFetch(`${API_BASE}/api/admin/gallery`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+        } else {
+          res = await authFetch(`${API_BASE}/api/admin/gallery/${g.id}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+        }
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || 'هەڵە ڕوویدا');
+        msgEl.classList.add('ok'); msgEl.textContent='پاشەکەوت کرا ✓';
+        await loadGallery();
+      }catch(err){
+        msgEl.classList.add('error'); msgEl.textContent = err.message || 'نەتوانرا پەیوەندی بکرێت';
+      }finally{ saveBtn.disabled = false; }
+    });
+
+    const delBtn = card.querySelector('.del-btn');
+    if(delBtn){
+      delBtn.addEventListener('click', async ()=>{
+        if(!confirm('دڵنیایت لە سڕینەوەی ئەم وێنەیە؟')) return;
+        try{
+          const res = await authFetch(`${API_BASE}/api/admin/gallery/${g.id}`, { method:'DELETE' });
+          if(!res.ok) throw new Error();
+          await loadGallery();
+        }catch(err){ alert('نەتوانرا بسڕدرێتەوە'); }
+      });
+    }
 
     container.appendChild(card);
   });
