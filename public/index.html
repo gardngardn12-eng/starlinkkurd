@@ -1266,9 +1266,9 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
 });
 
 /* ===================== LIVE PRICING ===================== */
-/* Point this at wherever the pricing API (see starlink-admin/) is deployed.
-   Example when deployed: 'https://api.yourdomain.com' */
-const PRICE_API_BASE = 'http://localhost:3000';
+/* The API (server.js) is deployed on the same Vercel project as this page
+   (see vercel.json rewrites), so we just call the current origin. */
+const PRICE_API_BASE = window.location.origin;
 
 const currencySymbol = { USD:'$', EUR:'€', IQD:'IQD' };
 
