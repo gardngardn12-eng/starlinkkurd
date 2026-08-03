@@ -158,6 +158,50 @@
 
   .loading{color:var(--text-dim); font-size:.9rem; text-align:center; padding:40px 0;}
   .hint{font-size:.78rem; color:var(--text-faint); margin:-10px 0 16px;}
+
+  /* ---------- mobile ---------- */
+  @media (max-width:640px){
+    body{padding:16px 10px 90px;}
+    .top{margin-bottom:22px;}
+    .brand{font-size:1rem;}
+    .logout{padding:8px 14px; font-size:.78rem;}
+    h1{font-size:1.22rem;}
+    .sub{font-size:.85rem; margin-bottom:22px;}
+
+    .tabs{
+      width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch;
+      justify-content:flex-start; scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{display:none;}
+    .tabs button{padding:10px 16px; font-size:.82rem; white-space:nowrap; flex-shrink:0;}
+
+    .add-new-btn{width:100%; text-align:center;}
+
+    .card{padding:18px 16px 18px; border-radius:14px;}
+    .card-head{flex-wrap:wrap;}
+    .card-title{font-size:1rem;}
+
+    .fields{gap:12px;}
+    label{font-size:.8rem;}
+    input, textarea, select{padding:12px 12px; font-size:1rem;} /* 16px prevents iOS zoom-on-focus */
+
+    .lang-tabs{overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;}
+    .lang-tabs::-webkit-scrollbar{display:none;}
+    .lang-tabs button{padding:9px 14px; flex-shrink:0;}
+
+    .seg{width:100%;}
+    .seg button{flex:1; padding:10px 8px; text-align:center;}
+
+    .img-row{gap:12px;}
+    .img-preview{width:90px; height:90px;}
+
+    .list-editor .row input{padding:11px 12px;}
+    .list-editor .rm{width:40px; height:40px; font-size:1.05rem;}
+
+    .card-foot{flex-wrap:wrap; gap:10px;}
+    .save-btn, .del-btn{padding:12px 20px; font-size:.86rem;}
+    .save-btn{flex:1; min-width:120px; text-align:center;}
+  }
 </style>
 </head>
 <body>
@@ -372,22 +416,6 @@ function renderProducts(){
         <span class="original" data-original></span>
       </div>
 
-      <div class="lang-tabs">
-        <button type="button" data-lang="ku" class="active">کوردی</button>
-        <button type="button" data-lang="en">English</button>
-        <button type="button" data-lang="ar">عربي</button>
-      </div>
-      ${['ku','en','ar'].map(l => `
-        <div class="lang-pane ${l==='ku'?'active':''}" data-pane="${l}">
-          <label>وشەی کورت (badge)</label>
-          <input class="f-badge" data-lang="${l}" value="${escapeHtml(p.badge[l]||'')}">
-          <label>ڕستەی کورت (tagline)</label>
-          <input class="f-tagline" data-lang="${l}" value="${escapeHtml(p.tagline[l]||'')}">
-          <label>وەسف</label>
-          <textarea class="f-desc" data-lang="${l}">${escapeHtml(p.description[l]||'')}</textarea>
-        </div>
-      `).join('')}
-
       <div class="lang-tabs feat-lang-tabs">
         <button type="button" data-lang="ku" class="active">کوردی</button>
         <button type="button" data-lang="en">English</button>
@@ -398,6 +426,11 @@ function renderProducts(){
       <button type="button" class="add-row-btn add-feat">+ زیادکردنی خاڵێک</button>
 
       <label style="margin-top:18px;">باشترین بەکارهێنان (چیپەکان)</label>
+      <div class="lang-tabs bestfor-lang-tabs">
+        <button type="button" data-lang="ku" class="active">کوردی</button>
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="ar">عربي</button>
+      </div>
       <div class="list-editor bestfor-editor"></div>
       <button type="button" class="add-row-btn add-bestfor">+ زیادکردنی چیپێک</button>
 
@@ -430,15 +463,6 @@ function renderProducts(){
     priceInput.addEventListener('input', updatePreview);
     discountInput.addEventListener('input', updatePreview);
     updatePreview();
-
-    // lang tabs (text fields)
-    card.querySelectorAll('.lang-tabs:not(.feat-lang-tabs) button').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        card.querySelectorAll('.lang-tabs:not(.feat-lang-tabs) button').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        card.querySelectorAll('.lang-pane').forEach(pane=> pane.classList.toggle('active', pane.dataset.pane===btn.dataset.lang));
-      });
-    });
 
     // image file
     card.querySelector('.img-file').addEventListener('change', async (e)=>{
@@ -478,13 +502,17 @@ function renderProducts(){
     });
     renderFeatList();
 
+    // best-for chips: own independent language tabs (previously silently shared the
+    // features tabs above, so switching language for the chips only worked if you
+    // happened to still be scrolled up next to the features tab bar)
+    let bestforLang = 'ku';
     let bestforEditor = card.querySelector('.bestfor-editor');
     function renderBestforList(){
       bestforEditor.innerHTML = p.bestfor.map((f,i)=>`
-        <div class="row"><input data-i="${i}" value="${escapeHtml(f[featLang]||'')}"><button type="button" class="rm" data-i="${i}">×</button></div>
+        <div class="row"><input data-i="${i}" value="${escapeHtml(f[bestforLang]||'')}"><button type="button" class="rm" data-i="${i}">×</button></div>
       `).join('');
       bestforEditor.querySelectorAll('input').forEach(inp=>{
-        inp.addEventListener('input', ()=>{ p.bestfor[inp.dataset.i][featLang] = inp.value; });
+        inp.addEventListener('input', ()=>{ p.bestfor[inp.dataset.i][bestforLang] = inp.value; });
       });
       bestforEditor.querySelectorAll('.rm').forEach(btn=>{
         btn.addEventListener('click', ()=>{ p.bestfor.splice(btn.dataset.i,1); renderBestforList(); });
@@ -493,8 +521,13 @@ function renderProducts(){
     card.querySelector('.add-bestfor').addEventListener('click', ()=>{
       p.bestfor.push({ku:'',en:'',ar:''}); renderBestforList();
     });
-    card.querySelectorAll('.feat-lang-tabs button').forEach(btn=>{
-      btn.addEventListener('click', renderBestforList);
+    card.querySelectorAll('.bestfor-lang-tabs button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        card.querySelectorAll('.bestfor-lang-tabs button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        bestforLang = btn.dataset.lang;
+        renderBestforList();
+      });
     });
     renderBestforList();
 
@@ -523,15 +556,11 @@ function renderProducts(){
           currency: selectedCurrency,
           sort_order: parseInt(card.querySelector('.f-order').value) || 0,
           image_id: image_id,
-          tagline_ku: card.querySelector('.f-tagline[data-lang="ku"]').value,
-          tagline_en: card.querySelector('.f-tagline[data-lang="en"]').value,
-          tagline_ar: card.querySelector('.f-tagline[data-lang="ar"]').value,
-          desc_ku: card.querySelector('.f-desc[data-lang="ku"]').value,
-          desc_en: card.querySelector('.f-desc[data-lang="en"]').value,
-          desc_ar: card.querySelector('.f-desc[data-lang="ar"]').value,
-          badge_ku: card.querySelector('.f-badge[data-lang="ku"]').value,
-          badge_en: card.querySelector('.f-badge[data-lang="en"]').value,
-          badge_ar: card.querySelector('.f-badge[data-lang="ar"]').value,
+          // badge / tagline / description removed from the panel — always saved empty
+          // so re-saving a product also wipes out any old text still sitting in the DB
+          tagline_ku: '', tagline_en: '', tagline_ar: '',
+          desc_ku: '', desc_en: '', desc_ar: '',
+          badge_ku: '', badge_en: '', badge_ar: '',
           features: p.features,
           bestfor: p.bestfor
         };

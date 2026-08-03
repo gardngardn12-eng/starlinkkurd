@@ -254,14 +254,8 @@ html[dir="rtl"] .section-head h2{font-family:var(--ff-rtl);font-weight:800;lette
 .card-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);}
 .product-card.mini .card-icon, .product-card.acc-cyan .card-icon{background:var(--cyan-soft);}
 .product-card.standard .card-icon, .product-card.acc-amber .card-icon{background:var(--amber-soft);}
-.badge{font-family:var(--ff-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:999px;border:1px solid var(--border);color:var(--text-faint);}
-.product-card .badge{display:none;}
-html[dir="rtl"] .badge{font-family:var(--ff-rtl);font-size:.78rem;letter-spacing:0;text-transform:none;}
-.product-card h3{font-family:var(--ff-display);font-size:1.55rem;font-weight:700;margin-bottom:6px;position:relative;z-index:1;}
+.product-card h3{font-family:var(--ff-display);font-size:1.55rem;font-weight:700;margin-bottom:16px;position:relative;z-index:1;}
 html[dir="rtl"] .product-card h3{font-family:var(--ff-rtl);font-weight:800;}
-.product-card .tagline{font-size:.92rem;color:var(--cyan);margin-bottom:16px;font-weight:600;position:relative;z-index:1;}
-.product-card.standard .tagline, .product-card.acc-amber .tagline{color:var(--amber);}
-.product-card .desc{color:var(--text-dim);font-size:.94rem;margin-bottom:24px;position:relative;z-index:1;}
 .feat-list{display:grid;gap:11px;margin-bottom:26px;position:relative;z-index:1;}
 .feat-list li{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--text);}
 .feat-list li svg{flex-shrink:0;margin-top:3px;}
@@ -950,10 +944,7 @@ function renderProductsGrid(lang){
     return `
       <div class="product-card ${accents[i%2]}">
         <div class="product-visual">${p.image ? `<img src="${p.image}" alt="${(p.name||'').replace(/"/g,'&quot;')}">` : ''}</div>
-        <div class="card-top"><span class="badge">${p.badge[lang]||p.badge.ku||''}</span></div>
         <h3>${p.name}</h3>
-        <div class="tagline">${p.tagline[lang]||p.tagline.ku||''}</div>
-        <p class="desc">${p.description[lang]||p.description.ku||''}</p>
         <div class="price-box">${priceHtml}</div>
         <ul class="feat-list">${features}</ul>
         <div class="bestfor">
