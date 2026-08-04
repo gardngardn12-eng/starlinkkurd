@@ -398,6 +398,28 @@ html[dir="rtl"] .speed-card .label{font-family:var(--ff-rtl);text-transform:none
 .speed-value{font-family:var(--ff-display);font-size:1.6rem;font-weight:700;}
 .speed-sub{color:var(--text-dim);font-size:.88rem;margin-top:6px;max-width:220px;}
 
+/* ---- live speed test tool ---- */
+.speedtest-card{
+  margin-top:22px;background:linear-gradient(180deg,var(--bg-elev),var(--surface));border:1px solid var(--border);
+  border-radius:var(--radius);padding:36px;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;
+}
+.speedtest-card h3{font-family:var(--ff-display);font-size:1.3rem;font-weight:700;}
+.speedtest-card .st-subtitle{color:var(--text-dim);font-size:.92rem;max-width:460px;}
+.st-gauge{width:168px;height:168px;--g-color:var(--teal);}
+.st-gauge .gauge-inner b{font-size:2rem;}
+.st-metrics{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+.st-metric{
+  background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius-sm);
+  padding:12px 20px;min-width:110px;
+}
+.st-metric .st-label{display:block;font-family:var(--ff-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;}
+html[dir="rtl"] .st-metric .st-label{font-family:var(--ff-rtl);text-transform:none;letter-spacing:0;font-size:.8rem;}
+.st-metric b{font-family:var(--ff-mono);font-size:1.15rem;color:var(--text);}
+.st-status{min-height:1.2em;color:var(--text-faint);font-size:.8rem;}
+.st-btn{min-width:220px;}
+.st-btn[disabled]{opacity:.6;cursor:not-allowed;}
+@media (max-width:600px){.speedtest-card{padding:26px 20px;} .st-metric{min-width:96px;padding:10px 14px;}}
+
 /* ===================== CONTACT ===================== */
 .contact-wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;}
 .contact-info{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;}
@@ -642,6 +664,23 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
           </div>
         </div>
       </div>
+
+      <div class="speedtest-card reveal">
+        <div>
+          <h3 data-i18n="speedtest.title"></h3>
+          <p class="st-subtitle" data-i18n="speedtest.subtitle"></p>
+        </div>
+        <div class="gauge st-gauge" id="st-gauge">
+          <div class="gauge-inner"><b class="mono" id="st-gauge-value">0</b><span>MBPS</span></div>
+        </div>
+        <div class="st-metrics">
+          <div class="st-metric"><span class="st-label" data-i18n="speedtest.ping"></span><b class="mono" id="st-ping">–</b></div>
+          <div class="st-metric"><span class="st-label" data-i18n="speedtest.download"></span><b class="mono" id="st-download">–</b></div>
+          <div class="st-metric"><span class="st-label" data-i18n="speedtest.upload"></span><b class="mono" id="st-upload">–</b></div>
+        </div>
+        <button class="btn btn-primary st-btn" id="st-start" data-i18n="speedtest.start"></button>
+        <p class="st-status mono" id="st-status"></p>
+      </div>
     </div>
   </section>
 
@@ -765,6 +804,17 @@ ku: {
     mini:"لە زۆربەی شوێنەکاندا خێرایی تا 300+ مێگابایت/چرکە پێشکەش دەکات",
     standard:"لە بارودۆخی گونجاودا دەگاتە 400+ مێگابایت/چرکە"
   },
+  speedtest:{
+    title:"خێرایی ئینتەرنێتەکەت ئێستا تاقی بکەرەوە",
+    subtitle:"جیاواز لە ژمارەکانی سەرەوە کە خێرایی ئامێرەکانن، ئەمە خێرایی ڕاستەقینەی پەیوەندییەکەت لە ئێستادا پیشان دەدات.",
+    start:"دەستپێکردنی تاقیکردنەوە",
+    retry:"دووبارە تاقی بکەرەوە",
+    testing:"تاقیکردنەوە لە کارایە",
+    ping:"دواکەوتن (Ping)",
+    download:"خێرایی داگرتن",
+    upload:"خێرایی بارکردن",
+    error:"تاقیکردنەوە سەرکەوتوو نەبوو، تکایە دووبارە هەوڵ بدەوە."
+  },
   contact:{eyebrow:"پەیوەندی", title:"پەیوەندیمان پێوە بکە", subtitle:"پرسیارت هەیە دەربارەی ئامێری ستارلینک؟ پەیوەندیمان پێوە بکە.",
     info_title:"زانیاریی پەیوەندی",
     name:"ناو", email:"ئیمەیل", message:"پەیام", submit:"پەیام بنێرە", sent:"پەیامەکەت نێردرا!"
@@ -811,6 +861,17 @@ en: {
     mini:"Delivers 300+ Mbps in most locations",
     standard:"Reaches 400+ Mbps under ideal conditions"
   },
+  speedtest:{
+    title:"Test Your Internet Speed Now",
+    subtitle:"Unlike the device numbers above, this measures your actual connection speed right now.",
+    start:"Start Speed Test",
+    retry:"Test Again",
+    testing:"Testing your connection…",
+    ping:"Ping",
+    download:"Download",
+    upload:"Upload",
+    error:"The test failed. Please try again."
+  },
   contact:{eyebrow:"Contact", title:"Get In Touch", subtitle:"Have a question about coverage, pricing, or installation? Reach out to us.",
     info_title:"Contact Information",
     name:"Name", email:"Email", message:"Message", submit:"Send Message", sent:"Your message has been sent!"
@@ -856,6 +917,17 @@ ar: {
   speed:{eyebrow:"السرعة", title:"سرعة الإنترنت",
     mini:"يقدم أكثر من 300 ميغابت في الثانية في معظم المواقع",
     standard:"يصل إلى أكثر من 400 ميغابت في الثانية في الظروف المثالية"
+  },
+  speedtest:{
+    title:"اختبر سرعة إنترنتك الآن",
+    subtitle:"على عكس الأرقام أعلاه الخاصة بالأجهزة، هذا يقيس سرعة اتصالك الفعلية الآن.",
+    start:"بدء اختبار السرعة",
+    retry:"إعادة الاختبار",
+    testing:"جارٍ اختبار اتصالك…",
+    ping:"البينغ",
+    download:"سرعة التنزيل",
+    upload:"سرعة الرفع",
+    error:"فشل الاختبار. يرجى المحاولة مرة أخرى."
   },
   contact:{eyebrow:"تواصل معنا", title:"تواصل معنا", subtitle:"لديك سؤال حول التغطية أو الأسعار أو التركيب؟ راسلنا.",
     info_title:"معلومات التواصل",
@@ -1195,6 +1267,124 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
   })
   .finally(() => { submitBtn.disabled = false; });
 });
+
+/* ===================== LIVE SPEED TEST ===================== */
+/* Real client-side speed test — no custom backend required. Uses Cloudflare's
+   public speed-test endpoints (the same ones behind speed.cloudflare.com and
+   the open-source @cloudflare/speedtest package) to measure ping, download
+   and upload against the visitor's actual connection right now. */
+(function(){
+  const btn = document.getElementById('st-start');
+  const gauge = document.getElementById('st-gauge');
+  const gaugeVal = document.getElementById('st-gauge-value');
+  const pingEl = document.getElementById('st-ping');
+  const dlEl = document.getElementById('st-download');
+  const ulEl = document.getElementById('st-upload');
+  const statusEl = document.getElementById('st-status');
+  if(!btn) return;
+
+  const DOWN_URL = 'https://speed.cloudflare.com/__down';
+  const UP_URL = 'https://speed.cloudflare.com/__up';
+  const GAUGE_MAX = 500; // Mbps at which the dial reads 100%
+
+  function setGauge(mbps){
+    const pct = Math.max(0, Math.min(100, (mbps / GAUGE_MAX) * 100));
+    gauge.style.setProperty('--pct', pct.toFixed(1));
+    gaugeVal.textContent = mbps >= 100 ? Math.round(mbps) : mbps.toFixed(1);
+  }
+
+  async function measurePing(samples){
+    const times = [];
+    for(let i = 0; i < samples; i++){
+      const t0 = performance.now();
+      try{
+        await fetch(`${DOWN_URL}?bytes=0&i=${Math.random()}`, {cache:'no-store', mode:'cors'});
+        times.push(performance.now() - t0);
+      }catch(e){ /* skip failed sample */ }
+    }
+    if(!times.length) throw new Error('ping failed');
+    times.sort((a,b) => a - b);
+    return times[Math.floor(times.length / 2)];
+  }
+
+  async function measureThroughput({method, durationMs, parallel, onProgress}){
+    const start = performance.now();
+    let totalBytes = 0;
+
+    async function worker(){
+      while(performance.now() - start < durationMs){
+        const controller = new AbortController();
+        try{
+          let res;
+          if(method === 'down'){
+            res = await fetch(`${DOWN_URL}?bytes=25000000&i=${Math.random()}`, {cache:'no-store', mode:'cors', signal:controller.signal});
+            const reader = res.body.getReader();
+            while(true){
+              const {done, value} = await reader.read();
+              if(done) break;
+              totalBytes += value.length;
+              onProgress(totalBytes, performance.now() - start);
+              if(performance.now() - start > durationMs){ controller.abort(); break; }
+            }
+          } else {
+            const payload = new Blob([new Uint8Array(1000000)]); // 1MB
+            await fetch(UP_URL, {method:'POST', body:payload, cache:'no-store', mode:'cors', signal:controller.signal});
+            totalBytes += payload.size;
+            onProgress(totalBytes, performance.now() - start);
+          }
+        }catch(e){ /* aborted or one request failed — keep going */ }
+      }
+    }
+
+    await Promise.all(Array.from({length: parallel}, worker));
+    const elapsedSec = (performance.now() - start) / 1000;
+    return elapsedSec > 0 ? (totalBytes * 8) / (elapsedSec * 1e6) : 0;
+  }
+
+  async function runTest(){
+    btn.disabled = true;
+    const lang = document.documentElement.lang || 'ku';
+    const dict = I18N[lang] ? I18N[lang].speedtest : I18N.ku.speedtest;
+    btn.textContent = dict.testing;
+    statusEl.textContent = '';
+    pingEl.textContent = '–';
+    dlEl.textContent = '–';
+    ulEl.textContent = '–';
+    setGauge(0);
+
+    try{
+      statusEl.textContent = dict.ping;
+      const ping = await measurePing(5);
+      pingEl.textContent = Math.round(ping) + ' ms';
+
+      statusEl.textContent = dict.download;
+      const download = await measureThroughput({
+        method:'down', durationMs:5000, parallel:4,
+        onProgress:(bytes, ms) => { if(ms > 200) setGauge((bytes * 8) / (ms / 1000) / 1e6); }
+      });
+      dlEl.textContent = download.toFixed(1) + ' Mbps';
+      setGauge(download);
+
+      statusEl.textContent = dict.upload;
+      const upload = await measureThroughput({
+        method:'up', durationMs:4000, parallel:2,
+        onProgress:(bytes, ms) => { if(ms > 200) setGauge((bytes * 8) / (ms / 1000) / 1e6); }
+      });
+      ulEl.textContent = upload.toFixed(1) + ' Mbps';
+      setGauge(download); // leave the dial reflecting download speed, the headline number
+
+      statusEl.textContent = '';
+      btn.textContent = dict.retry;
+    }catch(e){
+      statusEl.textContent = dict.error;
+      btn.textContent = dict.retry;
+    }finally{
+      btn.disabled = false;
+    }
+  }
+
+  btn.addEventListener('click', runTest);
+})();
 
 /* mobile burger -> reveal nav links inline */
 document.querySelector('.burger').addEventListener('click', ()=>{
